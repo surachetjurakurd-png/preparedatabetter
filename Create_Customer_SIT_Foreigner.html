@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Foreigner Customer to Onboarding</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            opacity: 0.95;
+            font-size: 14px;
+        }
+        
+        .setup-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        
+        .setup-warning strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .setup-code {
+            background-color: #f5f5f5;
+            border-left: 3px solid #ffc107;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        .setup-code:hover {
+            background-color: #e9e9e9;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .section-title {
+            background-color: #667eea;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title:hover {
+            background-color: #764ba2;
+        }
+        
+        .toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .section-title.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        
+        .section-content {
+            padding: 20px;
+            max-height: none;
+            overflow: visible;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+        
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .variable-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            border-radius: 4px;
+        }
+        
+        .variable-item.textarea {
+            grid-column: 1 / -1;
+        }
+        
+        .variable-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            min-height: 100px;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        
+        .variable-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .variable-name {
+            font-weight: 600;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        
+        .variable-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            transition: border-color 0.2s;
+        }
+        
+        .variable-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .buttons-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-reset {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #e67e22;
+        }
+        
+        .btn-export {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-export:hover {
+            background-color: #229954;
+        }
+        
+        .step {
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+        }
+        
+        .step:last-child {
+            border-bottom: none;
+        }
+        
+        .step:hover {
+            background-color: #fafafa;
+        }
+        
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 0 10px 0;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            margin-right: 12px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .step-toggle {
+            font-size: 18px;
+            color: #999;
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .step.expanded .step-toggle {
+            transform: rotate(180deg);
+        }
+        
+        .step-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .step.expanded .step-details {
+            max-height: 3000px;
+        }
+        
+        .detail-row {
+            margin-top: 15px;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #667eea;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            word-break: break-all;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        
+        .detail-value:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background-color: #764ba2;
+        }
+        
+        .btn-send {
+            background-color: #3498db;
+            color: white;
+            margin-top: 12px;
+            width: auto;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        .btn-send:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-send:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .response-area {
+            margin-top: 12px;
+            background-color: #f0f0f0;
+            border-left: 3px solid #3498db;
+            border-radius: 4px;
+            padding: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+        
+        .response-area.show {
+            display: block;
+        }
+        
+        .response-header {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .response-success {
+            border-left-color: #27ae60;
+            background-color: #e8f5e9;
+            color: #1b5e20;
+        }
+        
+        .response-error {
+            border-left-color: #e74c3c;
+            background-color: #ffebee;
+            color: #b71c1c;
+        }
+        
+        .footer {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Create Foreigner Customer to Onboarding</h1>
+            <p>API Request for Creating Foreigner Customer to CBS KKPB </p>
+        </header>
+
+        <div class="section" style="margin-bottom: 14px;">
+            <div class="section-content" style="padding: 12px 14px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="Main_Menu.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #0f766e; color: white;">Main Menu</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL23.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.3 </button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL13.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 1.3</button>
+                    </a>
+                    </a>
+                        <a href="Create_Customer_SIT_Thai_IAL21.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.1</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Foreigner.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #667eea; color: white;">Foreigner Customer</button>
+                    </a>
+                    <a href="KKP_Channel_Verification.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button>
+                    </a>
+                    <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button>
+                    </a>
+                    <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Convert Image Base64</button>
+                    </a>
+                    <a href="Remove_Device_Better_App.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Remove Device</button>
+                    </a>
+                    <a href="Transfer_Money_ATS_SG.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Topup Money</button>
+                    </a>
+                    <a href="Get_Customer_Profile_By_AccountNo.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Profile by Account</button>
+                    </a>
+                    <a href="Get_Account_From_CID.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Account from CID</button>
+                    </a>
+                    <a href="Cancel_State_For_Onboarding.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Cancel State</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="env-toggle-bar" class="section" style="margin-bottom: 14px; border-top: 4px solid #3498db;">
+            <div class="section-content" style="padding: 14px 16px;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 13px; color: #2c3e50;">🌐 Environment:</span>
+                    <button id="btn-env-sit" class="btn" onclick="switchEnv('sit')" style="background-color: #3498db; color: white; padding: 8px 20px; font-size: 13px;">SIT</button>
+                    <button id="btn-env-uat" class="btn" onclick="switchEnv('uat')" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #3498db; padding: 8px 20px; font-size: 13px;">UAT</button>
+                    <span id="env-active-label" style="font-size: 12px; color: #7f8c8d; margin-left: 4px;">Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" style="border-top: 3px solid #ffc107;">
+            <div class="section-title collapsed" onclick="toggleSection(event)" style="background-color: #f39c12;">
+                <span>⚙️ Setup Required - โปรดอ่านให้ครบ</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content collapsed">
+                <p style="margin-bottom: 12px;"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
+                <ol style="margin-left: 20px; margin-top: 8px;">
+                    <li style="margin-bottom: 12px;"><strong>เปิด Terminal / CMD</strong> ใหม่</li>
+                    <li style="margin-bottom: 12px;"><strong>เปลี่ยนไปยังโฟลเดอร์ที่มี proxy-server.js</strong> (เช่น Documents/Script Create Customer)</li>
+                    <li style="margin-bottom: 12px;"><strong>รันคำสั่ง proxy server:</strong>
+                        <div class="setup-code" onclick="copyCommand('node proxy-server.js')">
+node proxy-server.js
+                        </div>
+                    </li>
+                    <li style="margin-bottom: 12px;"><strong>รอจนเห็น:</strong> <code>Server running on http://localhost:3000</code></li>
+                    <li style="margin-bottom: 12px;"><strong>ตอนนี้สามารถใช้ HTML นี้ได้</strong> - ปุ่ม "Send Request" จะทำงาน</li>
+                </ol>
+                <p style="margin-top: 16px; padding: 12px; background-color: #ffebee; border-left: 4px solid #e74c3c; border-radius: 4px; color: #c62828;"><strong>⚠️ สำคัญ:</strong> ห้ามปิด Terminal / CMD ขณะใช้งาน HTML นี้</p>
+            </div>
+        </div>
+        
+        <!-- Variables Section -->
+        <div class="section">
+            <div class="section-title" onclick="toggleSection(event)">
+                <span>👽 Customer Data</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Passport ID</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="text" class="variable-input" id="identityID" value="VV43647364" onchange="updateVariables()" onkeyup="updateVariables()">
+                            <button class="btn" type="button" onclick="randomPassportId(event)" style="padding: 8px 10px; font-size: 12px; background-color: #667eea; color: white; white-space: nowrap;">Random</button>
+                        </div>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">ENG Firstname</label>
+                        <input type="text" class="variable-input" id="identityFirstnameEn" value="BetterName" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">ENG Lastname</label>
+                        <input type="text" class="variable-input" id="identityLastnameEn" value="BetterLastname" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Mobile number</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="text" class="variable-input" id="mobileNo" value="0877424559" onchange="updateVariables()" onkeyup="updateVariables()">
+                            <button class="btn" type="button" onclick="randomForeignerMobile(event)" style="padding: 8px 10px; font-size: 12px; background-color: #667eea; color: white; white-space: nowrap;">Random</button>
+                        </div>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Email</label>
+                        <input type="email" class="variable-input" id="email" value="kkmailuserQQ.0877424559@kkptest.onmicrosoft.com" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Birthday (dob)</label>
+                        <input type="text" class="variable-input" id="dateOfBirth" value="2005-01-01T07:00:00+07:00" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Issue date</label>
+                        <input type="text" class="variable-input" id="dateOfIssue" value="2007-10-02T00:00:00+07:00" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Expiry date</label>
+                        <input type="text" class="variable-input" id="dateOfExpiry" value="9999-01-01T07:00:00+07:00" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Nationality (ตัวย่อ)</label>
+                        <input type="text" class="variable-input" id="issueCountry" value="HK" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item textarea">
+                        <label class="variable-name">Facial (base64)</label>
+                        <textarea class="variable-textarea" id="image1" onchange="updateVariables()" onkeyup="updateVariables()" placeholder="Paste Base64 image data for Step 1..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Environment Configuration Section -->
+        <div class="section">
+            <div class="section-title collapsed" onclick="toggleSection(event)">
+                <span>⚙️ Environment Configuration</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content collapsed">
+                <div style="background-color: #eef7ff; border-left: 4px solid #3498db; border-radius: 6px; padding: 12px; margin-bottom: 14px; color: #1f2d3d;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">Remark:</p>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; font-family: 'Courier New', monospace; font-size: 12px;">
+                        <span style="min-width: 36px;">SIT:</span>
+                        <span>10.208.113.123</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: 'Courier New', monospace; font-size: 12px;">
+                        <span style="min-width: 36px;">UAT:</span>
+                        <span>cdf.kiatnakinbank.com</span>
+                    </div>
+                </div>
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Create customer)</label>
+                        <input type="text" class="variable-input" id="urlCDFCreateCustomer" value="10.208.113.123" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Get customer)</label>
+                        <input type="text" class="variable-input" id="urlCDFGetCustomerInfo" value="10.208.113.123" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Reference Number</label>
+                        <input type="text" class="variable-input" id="referenceNo" value="IBN20230301135428137" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                </div>
+                
+                <div class="buttons-group">
+                    <button class="btn btn-reset" onclick="resetVariables()">↻ Reset to Default</button>
+                    <button class="btn btn-export" onclick="exportVariables()">📥 Export as JSON</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Steps Section -->
+        <div class="section">
+            <div class="section-title" onclick="toggleSection(event)">
+                <span>🔄 API Steps & Requests</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content">
+                <!-- Step 1 -->
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <span class="step-title">Create Customer: Foreigner</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step1-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding', 'step1')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step1"></div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <span class="step-title">GET Customer Info FullAll</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfoFullAll
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step2-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfoFullAll', 'step2')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step2"></div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <span class="step-title">GET Customer Image</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerImage
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step3-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerImage', 'step3')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step3"></div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <span class="step-title">Overwrite Customer Image</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCDFCreateCustomer}}/CDF_NEW/api/AddCustomerImage
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step4-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCDFCreateCustomer}}/CDF_NEW/api/AddCustomerImage', 'step4')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CDF Web Portals Section -->
+        <div class="section">
+            <div class="section-title" onclick="toggleSection(event)">
+                <span>🌐 CDF Web Portals</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content">
+                <div style="background-color: #eef7ff; border-left: 4px solid #3498db; border-radius: 6px; padding: 14px; margin-top: 10px; color: #1f2d3d;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600;">คำอธิบายการใช้งาน:</p>
+                    <p style="margin: 0 0 10px 0;">หลังจาก Create customer ผ่าน API แล้ว จำเป็นต้องไปถ่ายรูปต่างชาติที่เว็บ CDF โดยจะมี User ด้านล่าง</p>
+                                        <div style="white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 12px; background: #ffffff; border: 1px solid #d9e8f7; border-radius: 4px; padding: 10px; line-height: 1.5;">SIT :
+    maker  >> user : cbs003s012  pass: Password1
+    checker >> user : onnicha.pan  pass: P@ssw0rd
+UAT:
+    maker  >> user : cbs003s019  pass: P@ssw0rd
+    checker >> user : cbs003s020  pass: P@ssw0rd
+    checker >> user : chanakit  pass: P@ssw0rd
+     user : cbs003s012  pass: Password1</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <a href="https://cdf_sit.kiatnakinbank.com/CDFWeb/Account/Login" target="_blank" style="text-decoration: none;">
+                        <button class="btn" style="width: 100%; padding: 12px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            🔗 SIT CDF Web
+                        </button>
+                    </a>
+                    <a href="https://cdf.kiatnakinbank.com/CDFWeb/Account/Login" target="_blank" style="text-decoration: none;">
+                        <button class="btn" style="width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            🔗 UAT CDF Web
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SMS Web Portals Section -->
+        <div class="section">
+            <div class="section-title" onclick="toggleSection(event)">
+                <span>📱 SMS Message Gateway</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <a href="http://10.208.11.105/smgmessage/" target="_blank" style="text-decoration: none;">
+                        <button class="btn" style="width: 100%; padding: 12px; background-color: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            📨 SIT SMS Gateway
+                        </button>
+                    </a>
+                    <a href="http://10.217.11.105/smgmessage/" target="_blank" style="text-decoration: none;">
+                        <button class="btn" style="width: 100%; padding: 12px; background-color: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            📨 UAT SMS Gateway
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>📄 Create Foreigner from API service | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+        </div>
+    </div>
+    
+    <script>
+        const defaultValues = {
+            identityID: 'VV43647364',
+            identityFirstnameEn: 'BetterName',
+            identityLastnameEn: 'BetterLastname',
+            mobileNo: '0877424559',
+            email: 'kkmailuserQQ.0877424559@kkptest.onmicrosoft.com',
+            dateOfBirth: '2005-01-01T07:00:00+07:00',
+            dateOfIssue: '2007-10-02T00:00:00+07:00',
+            dateOfExpiry: '9999-01-01T07:00:00+07:00',
+            issueCountry: 'HK',
+            image1: '',
+            urlCDFCreateCustomer: '10.208.113.123',
+            urlCDFGetCustomerInfo: '10.208.113.123',
+            referenceNo: 'IBN20230301135428137'
+        };
+
+        const ENV_CONFIG = {
+            sit: {
+                urlCDFCreateCustomer: '10.208.113.123',
+                urlCDFGetCustomerInfo: '10.208.113.123'
+            },
+            uat: {
+                urlCDFCreateCustomer: 'cdf.kiatnakinbank.com',
+                urlCDFGetCustomerInfo: 'cdf.kiatnakinbank.com'
+            }
+        };
+
+        function detectEnvFromEndpoints() {
+            const endpoint = (document.getElementById('urlCDFCreateCustomer') || {}).value || '';
+            return endpoint.trim().toLowerCase() === '10.208.113.123' ? 'sit' : 'uat';
+        }
+
+        function updateEnvToggleUI(env) {
+            const sitBtn = document.getElementById('btn-env-sit');
+            const uatBtn = document.getElementById('btn-env-uat');
+            const label = document.getElementById('env-active-label');
+
+            if (!sitBtn || !uatBtn) return;
+
+            if (env === 'sit') {
+                sitBtn.style.backgroundColor = '#3498db';
+                sitBtn.style.color = 'white';
+                sitBtn.style.border = 'none';
+                uatBtn.style.backgroundColor = '#ecf0ff';
+                uatBtn.style.color = '#2c3e50';
+                uatBtn.style.border = '1px solid #3498db';
+                if (label) label.textContent = 'Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]';
+            } else {
+                uatBtn.style.backgroundColor = '#27ae60';
+                uatBtn.style.color = 'white';
+                uatBtn.style.border = 'none';
+                sitBtn.style.backgroundColor = '#ecf0ff';
+                sitBtn.style.color = '#2c3e50';
+                sitBtn.style.border = '1px solid #27ae60';
+                if (label) label.textContent = 'Current: UAT [ตอนนี้ท่านเลือกเป็น UAT env.]';
+            }
+        }
+
+        function switchEnv(env) {
+            const cfg = ENV_CONFIG[env];
+            if (!cfg) return;
+
+            const createEndpointInput = document.getElementById('urlCDFCreateCustomer');
+            const getEndpointInput = document.getElementById('urlCDFGetCustomerInfo');
+            if (createEndpointInput) createEndpointInput.value = cfg.urlCDFCreateCustomer;
+            if (getEndpointInput) getEndpointInput.value = cfg.urlCDFGetCustomerInfo;
+
+            updateVariables();
+            updateEnvToggleUI(env);
+        }
+        
+        const requestBodies = {
+            step1: {
+                "header": {
+                    "transactionDate": "2023-02-03T11:35:28.137Z",
+                    "serviceName": "IDPassOnboarding",
+                    "systemCode": "IBN",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelId": "IBN"
+                },
+                "InputParam": {
+                    "callBackURL": "http://10.3.104.25/onboard-service/api/v1/cdf/callBackOnboarding",
+                    "CIFInfo": {
+                        "cardID": "{{identityID}}",
+                        "cardType": "002",
+                        "titleCodeTh": "00E002",
+                        "titleDescTh": "MS.",
+                        "firstNameTh": "{{identityFirstnameEn}}",
+                        "midNameTh": "",
+                        "lastNameTh": "{{identityLastnameEn}}",
+                        "titleCodeEn": "00E002",
+                        "titleDescEn": "MS.",
+                        "firstNameEn": "{{identityFirstnameEn}}",
+                        "midNameEn": "",
+                        "lastNameEn": "{{identityLastnameEn}}",
+                        "dateOfBirth": "{{dateOfBirth}}",
+                        "dateOfIssue": "{{dateOfIssue}}",
+                        "dateOfExpiry": "{{dateOfExpiry}}",
+                        "occupationCode": "2",
+                        "gender": "F",
+                        "maritalStatus": "S",
+                        "educationLevelCode": "2",
+                        "yearlyIncomeRange": "02",
+                        "jobTitle": "0001",
+                        "estimatedAssetRangeCode": "02",
+                        "nationality": "HK",
+                        "monthlyIncome": 100000,
+                        "businessCode": "D000000",
+                        "employeeName": "OneTwoThree",
+                        "IALLevel": 2.2,
+                        "AALLevel": 2.2,
+                        "LIALLevel": 2.2,
+                        "MaxLevel": 2.2,
+                        "issueCountry": "{{issueCountry}}",
+                        "countrySourceOfFund": "HK",
+                        "sourceOfFund": "99",
+                        "sourceOfFundRemark": "sourceOfFundRemark",
+                        "seizeFlag": "N",
+                        "seizeRemark": "",
+                        "involvEamloFlag": "N",
+                        "involvEamloRemark": "",
+                        "politicalFlag": "N",
+                        "politicalRemark": "",
+                        "officerCode": "B001",
+                        "skipNDIDFlag": "Y",
+                        "HavePin": "Y"
+                    },
+                    "AddressList": [
+                        {
+                            "addressFormat": "U",
+                            "addressType": "R",
+                            "countryCode": "TH",
+                            "provinceCode": "10",
+                            "postCode": "10400",
+                            "addrLine1": "121/3 type R",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "วังใหม่",
+                            "addrLine5": "ปทุมวัน",
+                            "addrLine6": "กรุงเทพมหานคร",
+                            "addrLine7": "TH"
+                        },
+                        {
+                            "addressFormat": "U",
+                            "addressType": "O",
+                            "countryCode": "TH",
+                            "provinceCode": "10",
+                            "postCode": "10400",
+                            "addrLine1": "121/3 type O",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "วังใหม่",
+                            "addrLine5": "ปทุมวัน",
+                            "addrLine6": "กรุงเทพมหานคร",
+                            "addrLine7": "TH"
+                        },
+                        {
+                            "addressFormat": "U",
+                            "addressType": "M",
+                            "countryCode": "TH",
+                            "provinceCode": "10",
+                            "postCode": "10400",
+                            "addrLine1": "121/3 type M",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "วังใหม่",
+                            "addrLine5": "ปทุมวัน",
+                            "addrLine6": "กรุงเทพมหานคร",
+                            "addrLine7": "TH"
+                        },
+                        {
+                            "addressFormat": "U",
+                            "addressType": "C",
+                            "countryCode": "TH",
+                            "provinceCode": "10",
+                            "postCode": "10400",
+                            "addrLine1": "121/3 type C",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "วังใหม่",
+                            "addrLine5": "ปทุมวัน",
+                            "addrLine6": "กรุงเทพมหานคร",
+                            "addrLine7": "TH"
+                        }
+                    ],
+                    "ContactList": [
+                        {
+                            "contactType": "MBL",
+                            "contactDesc": "{{mobileNo}}"
+                        },
+                        {
+                            "contactType": "EML",
+                            "contactDesc": "{{email}}"
+                        }
+                    ],
+                    "ConsentList": [
+                        {
+                            "consentType": "TSU",
+                            "consentVersion": "2.0",
+                            "consentAccept": "N"
+                        },
+                        {
+                            "consentType": "SSU",
+                            "consentVersion": "1.0",
+                            "consentAccept": "Y"
+                        },
+                        {
+                            "consentType": "CRS",
+                            "consentVersion": "1.0",
+                            "consentAccept": "Y"
+                        }
+                    ],
+                    "ContentList": [
+                        {
+                            "contentType": "IMG",
+                            "contentFormat": "Jpeg",
+                            "contentDesc": "ImageSelfie",
+                            "contentSource": "KKPForeign",
+                            "contentData": "{{image1}}"
+                        }
+                    ]
+                }
+            },
+            step2: {
+                "header": {
+                    "transactionDate": "2023-02-18T20:00:41+07:00",
+                    "serviceName": "getCustomerInfoFullAll",
+                    "systemCode": "IBN",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "IBN"
+                },
+                "InputParam": {
+                    "cardID": "{{identityID}}",
+                    "cardType": "002"
+                }
+            },
+            step3: {
+                "header": {
+                    "transactionDate": "2023-02-18T20:00:41+07:00",
+                    "serviceName": "getCustomerInfo",
+                    "systemCode": "IBN",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "IBN"
+                },
+                "InputParam": {
+                    "cardID": "{{identityID}}",
+                    "cardType": "002",
+                    "cifNo": null,
+                    "chooseContent": "M"
+                }
+            },
+            step4: {
+                "header": {
+                    "transactionDate": "2023-02-18T20:00:41+07:00",
+                    "serviceName": "AddCustomerImage",
+                    "systemCode": "RIB",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "RIB"
+                },
+                "InputParam": {
+                    "cardID": "{{identityID}}",
+                    "cardType": "002",
+                    "IssueCountry": "HK",
+                    "cifNo": "{{cifNo}}",
+                    "dummyNoOrCIFNo": ""
+                },
+                "ContentList": [
+                    {
+                        "contentType": "IMG",
+                        "contentFormat": "Jpeg",
+                        "contentDesc": "ImageSelfie",
+                        "contentData": "{{image1}}",
+                        "contentSource": "KKPForeign",
+                        "faceRecPercentResult": ""
+                    }
+                ]
+            }
+        };
+        
+        function toggleSection(event) {
+            event.stopPropagation();
+            const title = event.currentTarget;
+            title.classList.toggle('collapsed');
+            title.nextElementSibling.classList.toggle('collapsed');
+        }
+        
+        function toggleStep(event) {
+            event.stopPropagation();
+            const step = event.currentTarget;
+            step.classList.toggle('expanded');
+        }
+        
+        function updateVariables() {
+            const variables = {
+                identityID: document.getElementById('identityID').value,
+                identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
+                identityLastnameEn: document.getElementById('identityLastnameEn').value,
+                mobileNo: document.getElementById('mobileNo').value,
+                email: document.getElementById('email').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                dateOfIssue: document.getElementById('dateOfIssue').value,
+                dateOfExpiry: document.getElementById('dateOfExpiry').value,
+                issueCountry: document.getElementById('issueCountry').value,
+                image1: document.getElementById('image1').value,
+                urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
+                urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
+                referenceNo: document.getElementById('referenceNo').value
+            };
+
+            updateEnvToggleUI(detectEnvFromEndpoints());
+            
+            localStorage.setItem('apiVariables', JSON.stringify(variables));
+            
+            // Update request bodies display
+            Object.keys(requestBodies).forEach(key => {
+                const element = document.getElementById(key + '-body');
+                if (element) {
+                    const body = JSON.parse(JSON.stringify(requestBodies[key]));
+                    const bodyStr = JSON.stringify(body, null, 2);
+                    
+                    let display = bodyStr
+                        .replace(/{{identityID}}/g, variables.identityID)
+                        .replace(/{{identityFirstnameEn}}/g, variables.identityFirstnameEn)
+                        .replace(/{{identityLastnameEn}}/g, variables.identityLastnameEn)
+                        .replace(/{{mobileNo}}/g, variables.mobileNo)
+                        .replace(/{{email}}/g, variables.email)
+                        .replace(/{{dateOfBirth}}/g, variables.dateOfBirth)
+                        .replace(/{{dateOfIssue}}/g, variables.dateOfIssue)
+                        .replace(/{{dateOfExpiry}}/g, variables.dateOfExpiry)
+                        .replace(/{{issueCountry}}/g, variables.issueCountry)
+                        .replace(/{{image1}}/g, variables.image1)
+                        .replace(/{{referenceNo}}/g, variables.referenceNo);
+                    
+                    element.textContent = display;
+                }
+            });
+        }
+        
+        function resetVariables() {
+            Object.keys(defaultValues).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) element.value = defaultValues[key];
+            });
+            updateVariables();
+        }
+        
+        function exportVariables() {
+            const variables = {};
+            Object.keys(defaultValues).forEach(key => {
+                variables[key] = document.getElementById(key).value;
+            });
+            
+            const blob = new Blob([JSON.stringify(variables, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'api-variables-champ.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function copyToClipboard(event) {
+            event.stopPropagation();
+            const text = event.target.parentElement.innerText.replace('Copy', '').trim();
+            navigator.clipboard.writeText(text);
+            event.target.innerText = '✓ Copied!';
+            setTimeout(() => event.target.innerText = 'Copy', 2000);
+        }
+        
+        function copyResponseText(event) {
+            event.stopPropagation();
+            const btn = event.target;
+            const preElement = btn.nextElementSibling;
+            if (preElement && preElement.tagName === 'PRE') {
+                const text = preElement.innerText;
+                navigator.clipboard.writeText(text);
+                btn.innerText = '✓ Copied!';
+                setTimeout(() => btn.innerText = 'Copy', 2000);
+            }
+        }
+        
+        function copyCommand(command = 'node proxy-server.js') {
+            navigator.clipboard.writeText(command);
+            alert('✓ Command copied! Paste it in your terminal.');
+        }
+
+        function generateForeignerMobileNo() {
+            const prefixList = ['06', '08', '09'];
+            const prefix = prefixList[Math.floor(Math.random() * prefixList.length)];
+            let suffix = '';
+            for (let i = 0; i < 8; i++) {
+                suffix += String(Math.floor(Math.random() * 10));
+            }
+            return prefix + suffix;
+        }
+
+        function randomForeignerMobile(event) {
+            event.stopPropagation();
+            const mobileInput = document.getElementById('mobileNo');
+            mobileInput.value = generateForeignerMobileNo();
+            updateVariables();
+            // Auto-update email to match new mobile
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.value = 'kkpforeigner.' + mobileInput.value + '@kkptest.onmicrosoft.com';
+                updateVariables();
+            }
+        }
+
+        function randomForeignerEmail(event) {
+            event.stopPropagation();
+            const mobileValue = document.getElementById('mobileNo').value.replace(/\D/g, '');
+            const seed = mobileValue || generateForeignerMobileNo();
+            const emailInput = document.getElementById('email');
+            emailInput.value = 'kkpforeigner.' + seed + '@kkptest.onmicrosoft.com';
+            updateVariables();
+        }
+
+        function generatePassportId() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let prefix = '';
+            for (let i = 0; i < 3; i++) {
+                prefix += letters[Math.floor(Math.random() * letters.length)];
+            }
+            let digits = '';
+            for (let i = 0; i < 3; i++) {
+                digits += String(Math.floor(Math.random() * 10));
+            }
+            return prefix + digits;
+        }
+
+        function randomPassportId(event) {
+            event.stopPropagation();
+            const input = document.getElementById('identityID');
+            input.value = generatePassportId();
+            updateVariables();
+        }
+
+        function copyEndpointValue(event, value, envLabel) {
+            event.stopPropagation();
+            const btn = event.target;
+            navigator.clipboard.writeText(value);
+            btn.innerText = '✓ Copied!';
+            setTimeout(() => {
+                btn.innerText = envLabel === 'SIT' ? 'Copy SIT' : 'Copy UAT';
+            }, 2000);
+        }
+        
+        async function sendRequest(event, url, stepId) {
+            event.preventDefault();
+            event.stopPropagation();
+            const btn = event.target;
+            const responseArea = document.getElementById('response-' + stepId);
+            
+            const variables = {
+                urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
+                urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
+                identityID: document.getElementById('identityID').value,
+                identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
+                identityLastnameEn: document.getElementById('identityLastnameEn').value,
+                mobileNo: document.getElementById('mobileNo').value,
+                email: document.getElementById('email').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                dateOfIssue: document.getElementById('dateOfIssue').value,
+                dateOfExpiry: document.getElementById('dateOfExpiry').value,
+                issueCountry: document.getElementById('issueCountry').value,
+                image1: document.getElementById('image1').value,
+                referenceNo: document.getElementById('referenceNo').value
+            };
+            
+            let finalUrl = url
+                .replace('{{urlCDFCreateCustomer}}', variables.urlCDFCreateCustomer)
+                .replace('{{urlCDFGetCustomerInfo}}', variables.urlCDFGetCustomerInfo);
+            
+            const stepNum = stepId.replace('step', '');
+            let payload = JSON.parse(JSON.stringify(requestBodies['step' + stepNum]));
+            
+            const payloadStr = JSON.stringify(payload);
+            const replacedStr = payloadStr
+                .replace(/{{identityID}}/g, variables.identityID)
+                .replace(/{{identityFirstnameEn}}/g, variables.identityFirstnameEn)
+                .replace(/{{identityLastnameEn}}/g, variables.identityLastnameEn)
+                .replace(/{{mobileNo}}/g, variables.mobileNo)
+                .replace(/{{email}}/g, variables.email)
+                .replace(/{{dateOfBirth}}/g, variables.dateOfBirth)
+                .replace(/{{dateOfIssue}}/g, variables.dateOfIssue)
+                .replace(/{{dateOfExpiry}}/g, variables.dateOfExpiry)
+                .replace(/{{issueCountry}}/g, variables.issueCountry)
+                .replace(/{{image1}}/g, variables.image1)
+                .replace(/{{referenceNo}}/g, variables.referenceNo);
+            
+            payload = JSON.parse(replacedStr);
+            
+            btn.disabled = true;
+            responseArea.classList.add('show');
+            responseArea.style.borderLeftColor = '#f39c12';
+            responseArea.style.backgroundColor = '#fff3e0';
+            responseArea.innerHTML = '<div class="response-header">⏳ Sending request...</div><div>URL: ' + finalUrl + '</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/proxy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: finalUrl, payload })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    responseArea.style.borderLeftColor = '#27ae60';
+                    responseArea.style.backgroundColor = '#e8f5e9';
+                    const bodyStr = JSON.stringify(data.body, null, 2);
+                    responseArea.innerHTML = '<div class="response-header">✅ Success (Status: ' + data.status + ')</div><button class="copy-btn" onclick="copyResponseText(event)">Copy</button><pre>' + bodyStr + '</pre>';
+                } else {
+                    responseArea.style.borderLeftColor = '#e74c3c';
+                    responseArea.style.backgroundColor = '#ffebee';
+                    const bodyStr = JSON.stringify(data, null, 2);
+                    responseArea.innerHTML = '<div class="response-header">❌ Error</div><button class="copy-btn" onclick="copyResponseText(event)">Copy</button><pre>' + bodyStr + '</pre>';
+                }
+            } catch (error) {
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+                responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>' + error.message + '</div><div style="margin-top: 8px; font-size: 10px;">💡 ตรวจสอบว่า proxy server ทำงานที่ localhost:3000</div>';
+            }
+            
+            btn.disabled = false;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const saved = localStorage.getItem('apiVariables');
+            if (saved) {
+                try {
+                    const variables = JSON.parse(saved);
+                    Object.keys(variables).forEach(key => {
+                        const input = document.getElementById(key);
+                        if (input) input.value = variables[key];
+                    });
+                } catch (e) {}
+            }
+            
+            updateVariables();
+            updateEnvToggleUI(detectEnvFromEndpoints());
+        });
+    </script>
+</body>
+</html>

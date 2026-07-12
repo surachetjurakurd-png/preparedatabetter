@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel State For Onboarding</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛑%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background-color: #dc2626;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-title.collapsible {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title.collapsible:hover {
+            background-color: #b91c1c;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .section-title.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .variable-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid #dc2626;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: #dc2626;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .variable-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn-secondary {
+            background-color: #ecf0ff;
+            color: #2c3e50;
+            border: 1px solid #dc2626;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f0f5ff;
+        }
+
+        .detail-value {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #dc2626;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 340px;
+            overflow: auto;
+        }
+
+        .response-area {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #ddd;
+            display: none;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .response-area.show {
+            display: block;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .env-toggle-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .env-toggle-bar span {
+            font-weight: 700;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+
+        .footer {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛑 Cancel State For Onboarding</h1>
+            <p>อัปเดตสถานะ Onboarding State เป็น CANCELED สำหรับลูกค้าที่ไม่สามารถทำรายการต่อได้</p>
+        </header>
+
+        <div class="section" style="margin-bottom: 14px;">
+            <div class="section-content" style="padding: 12px 14px;">
+                <div class="nav-buttons">
+                    <a href="Main_Menu.html" style="text-decoration: none;"><button class="btn" style="background-color: #0f766e; color: white;">Main Menu</button></a>
+                    <a href="Create_Customer_SIT_Thai_IAL23.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.3 </button></a>
+                    <a href="Create_Customer_SIT_Thai_IAL13.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 1.3</button></a>
+                    <a href="Create_Customer_SIT_Thai_IAL21.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.1</button></a>
+                    <a href="Create_Customer_SIT_Foreigner.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Foreigner Customer</button></a>
+                    <a href="KKP_Channel_Verification.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button></a>
+                    <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button></a>
+                    <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Convert Image Base64</button></a>
+                    <a href="Remove_Device_Better_App.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Remove Device</button></a>
+                    <a href="Transfer_Money_ATS_SG.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Topup Money</button></a>
+                    <a href="Get_Customer_Profile_By_AccountNo.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Profile by Account</button></a>
+                    <a href="Get_Account_From_CID.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Account from CID</button></a>
+                    <a href="Cancel_State_For_Onboarding.html" style="text-decoration: none;"><button class="btn" style="background-color: #dc2626; color: white;">Cancel State</button></a>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="env-toggle-bar" class="section" style="margin-bottom: 14px; border-top: 4px solid #dc2626;">
+            <div class="section-content" style="padding: 14px 16px;">
+                <div class="env-toggle-bar">
+                    <span>Environment:</span>
+                    <button id="btn-env-sit" class="btn" onclick="switchEnv('sit')" style="background-color: #dc2626; color: white; padding: 8px 20px; font-size: 13px;">SIT</button>
+                    <button id="btn-env-uat" class="btn" onclick="switchEnv('uat')" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #dc2626; padding: 8px 20px; font-size: 13px;">UAT</button>
+                    <span id="env-active-label" style="font-size: 12px; color: #7f8c8d; margin-left: 4px;">Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Input Data</div>
+            <div class="section-content">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <div class="variable-name">Customer ID (เลขบัตร 13 หลัก)</div>
+                        <input type="text" id="customerId" class="variable-input" placeholder="เช่น: 1234567890123" maxlength="13">
+                    </div>
+                    <div class="variable-item">
+                        <div class="variable-name">State</div>
+                        <select id="stateField" class="variable-input">
+                            <option value="">-- เลือก State --</option>
+                            <option value="PERSONAL_LEGAL_INFO">PERSONAL_LEGAL_INFO</option>
+                            <option value="GET_KEY_SESSION">GET_KEY_SESSION</option>
+                            <option value="ONBOARDING">ONBOARDING</option>
+                            <option value="ACTION_LIVENESS">ACTION_LIVENESS</option>
+                            <option value="CANCELED">CANCELED</option>
+                            <option value="ENABLE_BIOMETRIC">ENABLE_BIOMETRIC</option>
+                            <option value="INVESTMENT_PERSONAL_ADDRESS_INFORMATION">INVESTMENT_PERSONAL_ADDRESS_INFORMATION</option>
+                            <option value="INVESTMENT_PERSONAL_INFORMATION_SUMMARY">INVESTMENT_PERSONAL_INFORMATION_SUMMARY</option>
+                            <option value="PRODUCT_PACKAGE">PRODUCT_PACKAGE</option>
+                            <option value="PASSIVE_LIVENESS">PASSIVE_LIVENESS</option>
+                            <option value="EMAIL_OTP">EMAIL_OTP</option>
+                            <option value="IDP">IDP</option>
+                            <option value="INVESTMENT_LIVENESS_FACE_RECOGNITION">INVESTMENT_LIVENESS_FACE_RECOGNITION</option>
+                            <option value="INVESTMENT_PERSONAL_ADDITIONAL_INFORMATION">INVESTMENT_PERSONAL_ADDITIONAL_INFORMATION</option>
+                            <option value="INVESTMENT_TERM_AND_CONDITION">INVESTMENT_TERM_AND_CONDITION</option>
+                            <option value="BIOMETRIC_CONSENT">BIOMETRIC_CONSENT</option>
+                            <option value="INVESTMENT_ONBOARDING">INVESTMENT_ONBOARDING</option>
+                            <option value="INVESTMENT_VERIFY_PIN">INVESTMENT_VERIFY_PIN</option>
+                            <option value="VERIFY_PIN">VERIFY_PIN</option>
+                            <option value="MOBILE_OTP">MOBILE_OTP</option>
+                            <option value="INVESTMENT_SUITABILITY_QUESTIONNAIRE">INVESTMENT_SUITABILITY_QUESTIONNAIRE</option>
+                            <option value="INVESTMENT_PERSONAL_INFORMATION">INVESTMENT_PERSONAL_INFORMATION</option>
+                            <option value="PERSONAL_INFORMATION">PERSONAL_INFORMATION</option>
+                            <option value="PERSONAL_ADDITIONAL_INFO">PERSONAL_ADDITIONAL_INFO</option>
+                            <option value="DOPA_INFORMATION">DOPA_INFORMATION</option>
+                            <option value="INVESTMENT_SUITABILITY_RISK_APPETITE">INVESTMENT_SUITABILITY_RISK_APPETITE</option>
+                            <option value="INVESTMENT_CONFIRM_INFORMATION">INVESTMENT_CONFIRM_INFORMATION</option>
+                            <option value="INVESTMENT_PRODUCT_DETAIL">INVESTMENT_PRODUCT_DETAIL</option>
+                            <option value="VALIDATE_INVESTMENT_INFORMATION">VALIDATE_INVESTMENT_INFORMATION</option>
+                            <option value="PERSONAL_SUMMARY">PERSONAL_SUMMARY</option>
+                            <option value="LIVENESS_FACE_RECOGNITION">LIVENESS_FACE_RECOGNITION</option>
+                            <option value="INVESTMENT_FATCA_AND_ACCOUNT_PURPOSE">INVESTMENT_FATCA_AND_ACCOUNT_PURPOSE</option>
+                            <option value="INVESTMENT_OPEN_ACCOUNT">INVESTMENT_OPEN_ACCOUNT</option>
+                            <option value="PERSONAL_ADDRESS">PERSONAL_ADDRESS</option>
+                            <option value="PERSONAL_MOBILE">PERSONAL_MOBILE</option>
+                            <option value="CONSENT">CONSENT</option>
+                            <option value="IDENTIFY_CUSTOMER">IDENTIFY_CUSTOMER</option>
+                            <option value="REGISTER_DEVICE">REGISTER_DEVICE</option>
+                            <option value="CREATE_PIN">CREATE_PIN</option>
+                            <option value="TERM_CONDITION">TERM_CONDITION</option>
+                            <option value="PERSONAL_EMAIL">PERSONAL_EMAIL</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title collapsible collapsed" onclick="toggleSection(event)">
+                <span>SQL Query Preview</span><span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content collapsed">
+                <div class="detail-value" id="sql-preview">กรุณากรอกข้อมูลด้านบน</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Actions</div>
+            <div class="section-content">
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="executeUpdate()">🚀 Execute CANCELED</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">✖ Clear</button>
+                </div>
+                <div id="response-area" class="response-area"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Result</div>
+            <div class="section-content">
+                <div class="detail-value" id="raw-response">No result yet</div>
+            </div>
+        </div>
+
+        <div class="footer">📂 WEB Create Customer | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'cancelStateOnboardingState';
+
+        const DB_CONFIG = {
+            sit: {
+                host: 'psql-rib-sit.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com',
+                port: '5432',
+                database: 'ribdb',
+                user: 'ribapp',
+                password: 'Passw0rd'
+            },
+            uat: {
+                host: 'psql-rib-test.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com',
+                port: '5432',
+                database: 'ribdb',
+                user: 'ribapp',
+                password: 'zkYsx5YJ7'
+            }
+        };
+
+        let currentEnv = 'sit';
+
+        function toggleSection(event) {
+            event.stopPropagation();
+            const title = event.currentTarget;
+            title.classList.toggle('collapsed');
+            title.nextElementSibling.classList.toggle('collapsed');
+        }
+
+        function validateCustomerId(customerId) {
+            return /^\d{13}$/.test(customerId);
+        }
+
+        function getInputs() {
+            return {
+                customerId: document.getElementById('customerId').value.trim(),
+                stateField: document.getElementById('stateField').value
+            };
+        }
+
+        function saveState() {
+            const inputs = getInputs();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...inputs, env: currentEnv }));
+        }
+
+        function loadState() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            try {
+                const state = JSON.parse(raw);
+                if (state.customerId) document.getElementById('customerId').value = state.customerId;
+                if (state.stateField) document.getElementById('stateField').value = state.stateField;
+                if (state.env) switchEnv(state.env);
+            } catch (err) {
+                console.warn('Failed to load state', err);
+            }
+        }
+
+        function updatePreview() {
+            const inputs = getInputs();
+            if (!inputs.customerId || !inputs.stateField) {
+                document.getElementById('sql-preview').textContent = 'กรุณากรอก Customer ID และเลือก State';
+                return;
+            }
+            document.getElementById('sql-preview').textContent =
+                "UPDATE rib.tb_t_onboarding_state\nSET\n    state = '" + inputs.stateField + "',\n    sub_state = 'CANCELED'\nWHERE create_user = '" + inputs.customerId + "';";
+            saveState();
+        }
+
+        function showResponse(type, html) {
+            const el = document.getElementById('response-area');
+            el.classList.add('show');
+            const colors = {
+                success: { border: '#16a34a', bg: '#e8f5e9' },
+                pending: { border: '#f39c12', bg: '#fff3e0' },
+                error:   { border: '#e74c3c', bg: '#ffebee' }
+            };
+            const c = colors[type] || colors.error;
+            el.style.borderLeftColor = c.border;
+            el.style.backgroundColor = c.bg;
+            el.innerHTML = html;
+        }
+
+        function validate() {
+            const inputs = getInputs();
+            if (!inputs.customerId) {
+                showResponse('error', '<strong>⚠️ Error</strong><div style="margin-top:4px;">กรุณากรอก Customer ID</div>');
+                return false;
+            }
+            if (!validateCustomerId(inputs.customerId)) {
+                showResponse('error', '<strong>⚠️ Error</strong><div style="margin-top:4px;">Customer ID ต้องเป็นตัวเลข 13 หลัก</div>');
+                return false;
+            }
+            if (!inputs.stateField) {
+                showResponse('error', '<strong>⚠️ Error</strong><div style="margin-top:4px;">กรุณาเลือก State</div>');
+                return false;
+            }
+            return true;
+        }
+
+        async function executeUpdate() {
+            if (!validate()) return;
+
+            const inputs = getInputs();
+            const dbConn = DB_CONFIG[currentEnv];
+
+            showResponse('pending', '<strong>⏳ Updating State...</strong><div style="margin-top:4px;">Connecting to ' + currentEnv.toUpperCase() + ' Database...</div>');
+            document.getElementById('raw-response').textContent = 'Running...';
+
+            const proxyCandidates = [
+                'http://localhost:3000',
+                'http://localhost:3001',
+                'http://localhost:3002'
+            ];
+
+            let lastError = null;
+            let result = null;
+
+            for (const proxyBase of proxyCandidates) {
+                try {
+                    const resp = await fetch(proxyBase + '/api/db/update-onboarding-state', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            connection: dbConn,
+                            customerId: inputs.customerId,
+                            stateField: inputs.stateField,
+                            env: currentEnv
+                        })
+                    });
+
+                    let data = null;
+                    try {
+                        data = await resp.json();
+                    } catch (parseErr) {
+                        lastError = parseErr;
+                        continue;
+                    }
+
+                    const missingRoute = resp.status === 404 || (data && data.error === 'Not found');
+                    if (missingRoute) {
+                        lastError = new Error('Route not found on ' + proxyBase);
+                        continue;
+                    }
+
+                    result = data || {};
+                    result._proxyBase = proxyBase;
+                    break;
+                } catch (err) {
+                    lastError = err;
+                }
+            }
+
+            if (!result) {
+                const msg = lastError ? lastError.message : 'Unable to connect to proxy server';
+                showResponse('error', '<strong>❌ Connection Error</strong><div style="margin-top:4px;">' + msg + '</div>');
+                document.getElementById('raw-response').textContent = 'Connection failed: ' + msg;
+                return;
+            }
+
+            document.getElementById('raw-response').textContent = JSON.stringify(result, null, 2);
+
+            if (!result.success) {
+                showResponse('error', '<strong>❌ Database Error</strong><div style="margin-top:4px;">' + (result.error || 'Unknown error') + '</div>');
+                return;
+            }
+
+            const rowCount = result.rowCount || 0;
+            if (rowCount === 0) {
+                showResponse('success', '<strong>⚠️ UPDATE Completed</strong><div style="margin-top:4px;">ENV: <strong>' + currentEnv.toUpperCase() + '</strong></div><div style="margin-top:6px; color: #b45309;">ไม่พบ records ที่ต้องการอัปเดต (Customer ID: <strong>' + inputs.customerId + '</strong>)</div>');
+            } else {
+                showResponse('success', '<strong>✅ State Updated Successfully!</strong><div style="margin-top:4px;">ENV: <strong>' + currentEnv.toUpperCase() + '</strong></div><div style="margin-top:6px;">อัปเดต <strong>' + rowCount + '</strong> row(s) | Customer ID: <strong>' + inputs.customerId + '</strong></div><div style="margin-top:4px; color: #065f46;">state = <strong>' + inputs.stateField + '</strong> | sub_state = <strong>CANCELED</strong></div>');
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('customerId').value = '';
+            document.getElementById('stateField').value = '';
+            document.getElementById('response-area').classList.remove('show');
+            document.getElementById('raw-response').textContent = 'No result yet';
+            updatePreview();
+            document.getElementById('customerId').focus();
+        }
+
+        function switchEnv(env) {
+            currentEnv = env;
+            updateEnvToggleUI(env);
+        }
+
+        function updateEnvToggleUI(env) {
+            const sitBtn = document.getElementById('btn-env-sit');
+            const uatBtn = document.getElementById('btn-env-uat');
+            const label = document.getElementById('env-active-label');
+            if (!sitBtn || !uatBtn) return;
+            if (env === 'sit') {
+                sitBtn.style.cssText = 'background-color:#dc2626;color:white;border:none;padding:8px 20px;font-size:13px;';
+                uatBtn.style.cssText = 'background-color:#ecf0ff;color:#2c3e50;border:1px solid #dc2626;padding:8px 20px;font-size:13px;';
+                if (label) label.textContent = 'Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]';
+            } else {
+                uatBtn.style.cssText = 'background-color:#0ea5a4;color:white;border:none;padding:8px 20px;font-size:13px;';
+                sitBtn.style.cssText = 'background-color:#ecf0ff;color:#2c3e50;border:1px solid #0ea5a4;padding:8px 20px;font-size:13px;';
+                if (label) label.textContent = 'Current: UAT [ตอนนี้ท่านเลือกเป็น UAT env.]';
+            }
+        }
+
+        document.getElementById('customerId').addEventListener('input', updatePreview);
+        document.getElementById('stateField').addEventListener('change', updatePreview);
+        document.getElementById('customerId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') executeUpdate();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                updateEnvToggleUI('sit');
+            }
+            updatePreview();
+            document.getElementById('customerId').focus();
+        });
+    </script>
+</body>
+</html>

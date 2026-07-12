@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Thai Customer IAL 1.3</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background-color: #667eea;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title:hover {
+            background-color: #764ba2;
+        }
+
+        .section-content {
+            padding: 20px;
+            max-height: none;
+            overflow: visible;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .section-title.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .variable-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .variable-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .variable-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .variable-textarea {
+            min-height: 96px;
+            resize: vertical;
+            line-height: 1.4;
+        }
+
+        .variable-item-wide {
+            grid-column: 1 / -1;
+        }
+
+        .buttons-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-reset {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-export {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .step {
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 0 10px 0;
+        }
+
+        .step-number {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            margin-right: 12px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .step-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .step.expanded .step-details {
+            max-height: 3000px;
+        }
+
+        .detail-row {
+            margin-top: 15px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #667eea;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            word-break: break-all;
+            max-height: 420px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+
+        .detail-value:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .btn-send {
+            background-color: #3498db;
+            color: white;
+            margin-top: 12px;
+            width: auto;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .response-area {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #ddd;
+            display: none;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .response-area.show {
+            display: block;
+        }
+
+        .response-header {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇹🇭 Create Thai Customer 1.3</h1>
+            <p>API Request for Creating Thai Customer IAL 1.3</p>
+        </header>
+
+        <div class="section" style="margin-bottom: 14px;">
+            <div class="section-content" style="padding: 12px 14px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="Main_Menu.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #0f766e; color: white;">Main Menu</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL23.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.3 </button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL13.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #667eea; color: white;">Thai Customer 1.3</button>
+                    </a>
+                    </a>
+                        <a href="Create_Customer_SIT_Thai_IAL21.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.1</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Foreigner.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Foreigner Customer</button>
+                    </a>
+                    <a href="KKP_Channel_Verification.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button>
+                    </a>
+                    <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button>
+                    </a>
+                    <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Convert Image Base64</button>
+                    </a>
+                    <a href="Remove_Device_Better_App.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Remove Device</button>
+                    </a>
+                    <a href="Transfer_Money_ATS_SG.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Topup Money</button>
+                    </a>
+                    <a href="Get_Customer_Profile_By_AccountNo.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Profile by Account</button>
+                    </a>
+                    <a href="Get_Account_From_CID.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Account from CID</button>
+                    </a>
+                    <a href="Cancel_State_For_Onboarding.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Cancel State</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="env-toggle-bar" class="section" style="margin-bottom: 14px; border-top: 4px solid #3498db;">
+            <div class="section-content" style="padding: 14px 16px;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 13px; color: #2c3e50;">🌐 Environment:</span>
+                    <button id="btn-env-sit" class="btn" onclick="switchEnv('sit')" style="background-color: #3498db; color: white; padding: 8px 20px; font-size: 13px;">SIT</button>
+                    <button id="btn-env-uat" class="btn" onclick="switchEnv('uat')" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #3498db; padding: 8px 20px; font-size: 13px;">UAT</button>
+                    <span id="env-active-label" style="font-size: 12px; color: #7f8c8d; margin-left: 4px;">Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="border-top: 3px solid #ffc107;">
+            <div class="section-title collapsed" onclick="toggleSection(event)" style="background-color: #f39c12;">
+                <span>⚙️ Setup Required - โปรดอ่านให้ครบ</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content collapsed">
+                <p style="margin-bottom: 12px;"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
+                <ol style="margin-left: 20px; margin-top: 8px;">
+                    <li style="margin-bottom: 12px;"><strong>เปิด Terminal / CMD</strong> ใหม่</li>
+                    <li style="margin-bottom: 12px;"><strong>เปลี่ยนไปยังโฟลเดอร์ที่มี proxy-server.js</strong> (เช่น Documents/Script Create Customer/WebCreateForeigner)</li>
+                    <li style="margin-bottom: 12px;"><strong>รันคำสั่ง proxy server:</strong>
+                        <div style="background-color: #f5f5f5; border-left: 3px solid #ffc107; padding: 10px 15px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; margin-top: 10px; cursor: pointer;" onclick="copyCommand('node proxy-server.js')">node proxy-server.js</div>
+                    </li>
+                    <li style="margin-bottom: 12px;"><strong>รอจนเห็น:</strong> Server running on http://localhost:3000</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title" onclick="toggleSection(event)">
+                <span>🧾 Customer Data</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Thai Citizen ID</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="text" class="variable-input" id="identityID" value="8957486781295" onchange="updateVariables()" onkeyup="updateVariables()">
+                            <button class="btn" type="button" onclick="randomThaiCitizenId(event)" style="padding: 8px 10px; font-size: 12px; background-color: #667eea; color: white; white-space: nowrap;">Random</button>
+                        </div>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">TH Firstname</label>
+                        <input type="text" class="variable-input" id="identityFirstnameTh" value="โอโตเมทเทส" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">TH Lastname</label>
+                        <input type="text" class="variable-input" id="identityLastnameTh" value="ทดสอบระบบ" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">ENG Firstname</label>
+                        <input type="text" class="variable-input" id="identityFirstnameEn" value="Automatetest" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">ENG Lastname</label>
+                        <input type="text" class="variable-input" id="identityLastnameEn" value="TestingSystem" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Mobile Number</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="text" class="variable-input" id="mobileNo" value="0964425903" onchange="updateVariables()" onkeyup="updateVariables()">
+                            <button class="btn" type="button" onclick="randomMobileNo(event)" style="padding: 8px 10px; font-size: 12px; background-color: #667eea; color: white; white-space: nowrap;">Random</button>
+                        </div>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Email</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="email" class="variable-input" id="email" value="KKMailuser1@kkptest.onmicrosoft.com" onchange="updateVariables()" onkeyup="updateVariables()">
+                            <button class="btn" type="button" onclick="randomEmail(event)" style="padding: 8px 10px; font-size: 12px; background-color: #667eea; color: white; white-space: nowrap;">Random</button>
+                        </div>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">lIALLevel</label>
+                        <input type="text" class="variable-input" id="lIALLevel" value="1.3" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Date of Birth</label>
+                        <input type="text" class="variable-input" id="dateOfBirth" value="1992-06-04T00:00:00+07:00" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title collapsed" onclick="toggleSection(event)">
+                <span>⚙️ Environment Configuration</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content collapsed">
+                <div style="background-color: #eef7ff; border-left: 4px solid #3498db; border-radius: 6px; padding: 12px; margin-bottom: 14px; color: #1f2d3d;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">Remark:</p>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; font-family: 'Courier New', monospace; font-size: 12px;">
+                        <span style="min-width: 36px;">SIT:</span>
+                        <span>10.208.113.123</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: 'Courier New', monospace; font-size: 12px;">
+                        <span style="min-width: 36px;">UAT:</span>
+                        <span>cdf.kiatnakinbank.com</span>
+                    </div>
+                    <div style="height: 8px;"></div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; font-family: 'Courier New', monospace; font-size: 12px;">
+                        <span style="min-width: 36px;">PIN SIT:</span>
+                        <span>ribs.kiatnakinbank.com</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: 'Courier New', monospace; font-size: 12px;">
+                        <span style="min-width: 36px;">PIN UAT:</span>
+                        <span>ribu.kiatnakinbank.com</span>
+                    </div>
+                </div>
+
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Create customer)</label>
+                        <input type="text" class="variable-input" id="urlCDFCreateCustomer" value="10.208.113.123" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Get customer)</label>
+                        <input type="text" class="variable-input" id="urlCDFGetCustomerInfo" value="10.208.113.123" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Create MyPin)</label>
+                        <input type="text" class="variable-input" id="urlCreateMyPin" value="ribs.kiatnakinbank.com" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Reference Number</label>
+                        <input type="text" class="variable-input" id="referenceNo" value="IBN20230301135428137" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Proxy Base URL</label>
+                        <input type="text" class="variable-input" id="proxyBaseUrl" value="http://localhost:3000" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">DB Environment</label>
+                        <select class="variable-input" id="dbEnv" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                            <option value="uat">UAT</option>
+                            <option value="sit">SIT</option>
+                        </select>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">DB Host</label>
+                        <input type="text" class="variable-input" id="dbHost" value="psql-rib-test.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">DB Port</label>
+                        <input type="text" class="variable-input" id="dbPort" value="5432" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">DB Name</label>
+                        <input type="text" class="variable-input" id="dbName" value="ribdb" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">DB Username</label>
+                        <input type="text" class="variable-input" id="dbUser" value="ribapp" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">DB Password</label>
+                        <input type="password" class="variable-input" id="dbPassword" value="zkYsx5YJ7" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Insert ID No</label>
+                        <input type="text" class="variable-input" id="dbInsertIdNo" value="6654598427756" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Insert CIS ID</label>
+                        <input type="text" class="variable-input" id="dbInsertCisId" value="2436605736" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Insert Update User</label>
+                        <input type="text" class="variable-input" id="dbInsertUpdateUser" value="2436605736" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                </div>
+
+                <div class="buttons-group">
+                    <button class="btn btn-reset" onclick="resetVariables()">↻ Reset to Default</button>
+                    <button class="btn btn-export" onclick="exportVariables()">📥 Export as JSON</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title" onclick="toggleSection(event)">
+                <span>🔄 API Steps & Requests</span>
+                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+            </div>
+            <div class="section-content">
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <span class="step-title">Create Thai Customer IAL 1.3</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step1-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding', 'step1')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step1"></div>
+                    </div>
+                </div>
+
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <span class="step-title">Get Customer Info</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfo
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step2-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfo', 'step2')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step2"></div>
+                    </div>
+                </div>
+
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <span class="step-title">Create MyPin</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">URL</div>
+                            <div class="detail-value" id="step3-url">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Body</div>
+                            <div class="detail-value" id="step3-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="sendRequest(event, 'http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN', 'step3')">🚀 Send Request</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step3"></div>
+                    </div>
+                </div>
+
+                <div class="step" onclick="toggleStep(event)">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <span class="step-title">Insert Customer Info (DB)</span>
+                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                    </div>
+                    <div class="step-details" onclick="event.stopPropagation()">
+                        <div class="detail-row">
+                            <div class="detail-label">SQL (Parameterized)</div>
+                            <div class="detail-value" id="step4-body">
+                                <button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-send" onclick="insertCustomerInfo(event)">🚀 Insert Into rib.tb_m_cust_info</button>
+                        <div class="response-area" onclick="event.stopPropagation()" id="response-step4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📄 Create Thai Customer IAL 1.3 | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+        </div>
+    </div>
+
+    <script>
+        const defaultValues = {
+            identityID: '8957486781295',
+            identityFirstnameTh: 'โอโตเมทเทส',
+            identityLastnameTh: 'ทดสอบระบบ',
+            identityFirstnameEn: 'Automatetest',
+            identityLastnameEn: 'TestingSystem',
+            mobileNo: '0964425903',
+            email: 'KKMailuser1@kkptest.onmicrosoft.com',
+            lIALLevel: '1.3',
+            dateOfBirth: '1992-06-04T00:00:00+07:00',
+            image1: '', // Removed from form
+            urlCDFCreateCustomer: '10.208.113.123',
+            urlCDFGetCustomerInfo: '10.208.113.123',
+            urlCreateMyPin: 'ribs.kiatnakinbank.com',
+            referenceNo: 'IBN20230301135428137',
+            proxyBaseUrl: 'http://localhost:3000',
+            dbEnv: 'uat',
+            dbHost: 'psql-rib-test.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com',
+            dbPort: '5432',
+            dbName: 'ribdb',
+            dbUser: 'ribapp',
+            dbPassword: 'zkYsx5YJ7',
+            dbInsertIdNo: '6654598427756',
+            dbInsertCisId: '2436605736',
+            dbInsertUpdateUser: '2436605736'
+        };
+
+        const ENV_CONFIG = {
+            sit: {
+                urlCDFCreateCustomer: '10.208.113.123',
+                urlCDFGetCustomerInfo: '10.208.113.123',
+                urlCreateMyPin: 'ribs.kiatnakinbank.com',
+                dbEnv: 'sit',
+                dbHost: 'psql-rib-sit.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com',
+                dbPassword: 'Passw0rd'
+            },
+            uat: {
+                urlCDFCreateCustomer: 'cdf.kiatnakinbank.com',
+                urlCDFGetCustomerInfo: 'cdf.kiatnakinbank.com',
+                urlCreateMyPin: 'ribu.kiatnakinbank.com',
+                dbEnv: 'uat',
+                dbHost: 'psql-rib-test.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com',
+                dbPassword: 'zkYsx5YJ7'
+            }
+        };
+
+        let latestGetCifData = {
+            cifNo: '',
+            mobile: '',
+            email: ''
+        };
+
+        const requestBodies = {
+            step1: {
+                "header": {
+                    "transactionDate": "{{transactionDate}}",
+                    "serviceName": "IDPassOnboarding",
+                    "systemCode": "RIB",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "RIB"
+                },
+                "InputParam": {
+                    "callBackURL": "https://10.202.104.75/CallbackWeb/api/CallbackOnboarding",
+                    "CIFInfo": {
+                        "cardID": "{{identityID}}",
+                        "cardType": "001",
+                        "titleCodeTh": "00T001",
+                        "titleDescTh": "นาย",
+                        "firstNameTh": "{{identityFirstnameTh}}",
+                        "midNameTh": null,
+                        "lastNameTh": "{{identityLastnameTh}}",
+                        "titleCodeEn": "00E001",
+                        "titleDescEn": "MR.",
+                        "firstNameEn": "{{identityFirstnameEn}}",
+                        "midNameEn": null,
+                        "lastNameEn": "{{identityLastnameEn}}",
+                        "issueLocation": null,
+                        "dateOfBirth": "{{dateOfBirth}}",
+                        "dateOfIssue": "2018-02-15T00:00:00+07:00",
+                        "dateOfExpiry": "2050-02-09T00:00:00+07:00",
+                        "occupationCode": "18",
+                        "gender": "M",
+                        "maritalStatus": "S",
+                        "nationality": "TH",
+                        "monthlyIncome": null,
+                        "businessCode": "D000000",
+                        "employeeName": null,
+                        "IALLevel": "{{lIALLevel}}",
+                        "AALLevel": "",
+                        "LIALLevel": "{{lIALLevel}}",
+                        "IssueCountry": "TH",
+                        "countrySourceOfFund": "TH",
+                        "sourceOfFund": "01",
+                        "sourceOfFundRemark": "",
+                        "seizeFlag": null,
+                        "seizeRemark": null,
+                        "involvEamloFlag": null,
+                        "involvEamloRemark": null,
+                        "politicalFlag": null,
+                        "politicalRemark": null,
+                        "officerCode": null,
+                        "skipNDIDFlag": "Y",
+                        "fatcaStatus": "FATCLOC",
+                        "fatcaStatusVersion": "1.0"
+                    },
+                    "AddressList": [
+                        {
+                            "addressFormat": "L",
+                            "addressType": "R",
+                            "addrNumber": "1",
+                            "village": "3",
+                            "floorNo": "4",
+                            "moo": "2",
+                            "street": "7",
+                            "soi": "ศาลาครื่น",
+                            "roomNo": "5",
+                            "subDistrictCode": "500101",
+                            "districtCode": "5001",
+                            "provinceCode": "50",
+                            "postCode": "50200",
+                            "countryCode": "TH",
+                            "addrLine1": "",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "",
+                            "addrLine5": "",
+                            "addrLine6": "",
+                            "addrLine7": ""
+                        },
+                        {
+                            "addressFormat": "L",
+                            "addressType": "O",
+                            "addrNumber": "1",
+                            "village": "3",
+                            "floorNo": "4",
+                            "moo": "2",
+                            "street": "7",
+                            "soi": "6",
+                            "roomNo": "5",
+                            "subDistrictCode": "500101",
+                            "districtCode": "5001",
+                            "provinceCode": "50",
+                            "postCode": "50200",
+                            "countryCode": "TH",
+                            "addrLine1": "",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "",
+                            "addrLine5": "",
+                            "addrLine6": "",
+                            "addrLine7": ""
+                        },
+                        {
+                            "addressFormat": "L",
+                            "addressType": "M",
+                            "addrNumber": "1",
+                            "village": "3",
+                            "floorNo": "4",
+                            "moo": "2",
+                            "street": "7",
+                            "soi": "6",
+                            "roomNo": "5",
+                            "subDistrictCode": "500101",
+                            "districtCode": "5001",
+                            "provinceCode": "50",
+                            "postCode": "50200",
+                            "countryCode": "TH",
+                            "addrLine1": "",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "",
+                            "addrLine5": "",
+                            "addrLine6": "",
+                            "addrLine7": ""
+                        },
+                        {
+                            "addressFormat": "L",
+                            "addressType": "C",
+                            "addrNumber": "1",
+                            "village": "3",
+                            "floorNo": "4",
+                            "moo": "2",
+                            "street": "7",
+                            "soi": "6",
+                            "roomNo": "5",
+                            "subDistrictCode": "500101",
+                            "districtCode": "5001",
+                            "provinceCode": "50",
+                            "postCode": "50200",
+                            "countryCode": "TH",
+                            "addrLine1": "",
+                            "addrLine2": "",
+                            "addrLine3": "",
+                            "addrLine4": "",
+                            "addrLine5": "",
+                            "addrLine6": "",
+                            "addrLine7": ""
+                        }
+                    ],
+                    "ContactList": [
+                        {
+                            "contactType": "MBL",
+                            "contactDesc": "{{mobileNo}}"
+                        },
+                        {
+                            "contactType": "EML",
+                            "contactDesc": "{{email}}"
+                        }
+                    ],
+                    "ConsentList": [
+                        {
+                            "consentType": "TSU",
+                            "consentVersion": "2.0",
+                            "consentAccept": "Y"
+                        },
+                        {
+                            "consentType": "SSU",
+                            "consentVersion": "2.0",
+                            "consentAccept": "Y"
+                        },
+                        {
+                            "consentType": "CRS",
+                            "consentVersion": "1.0",
+                            "consentAccept": "Y"
+                        },
+                        {
+                            "consentType": "BIO",
+                            "consentVersion": "1.0",
+                            "consentAccept": "Y"
+                        },
+                        {
+                            "consentType": "PFL",
+                            "consentVersion": "1.0",
+                            "consentAccept": "Y"
+                        },
+                        {
+                            "consentType": "GINS",
+                            "consentVersion": "1.0",
+                            "consentAccept": "N"
+                        }
+                    ],
+                    "ContentList": []
+                }
+            },
+            step2: {
+                "header": {
+                    "transactionDate": "{{transactionDate}}",
+                    "serviceName": "getCustomerInfo",
+                    "systemCode": "CDF",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "CDF"
+                },
+                "InputParam": {
+                    "cardID": "{{identityID}}",
+                    "cardType": "001",
+                    "cifNo": null
+                }
+            },
+            step3: {
+                "cisID": "{{cifNoFromGetCif}}",
+                "myPin": "112233",
+                "isForceChange": false,
+                "clientIp": "171.241.83.49"
+            },
+            step4: {
+                "header": {
+                    "transactionDate": "{{transactionDate}}",
+                    "serviceName": "AddCustomerImage",
+                    "systemCode": "RIB",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "RIB"
+                },
+                "InputParam": {
+                    "cardID": "{{identityID}}",
+                    "cardType": "001",
+                    "IssueCountry": "TH"
+                },
+                "ContentList": [
+                    {
+                        "contentType": "IMG",
+                        "contentFormat": "Jpeg",
+                        "contentDesc": "ImageSelfie",
+                        "contentData": "{{image1}}",
+                        "contentSource": "KKP",
+                        "faceRecPercentResult": ""
+                    }
+                ]
+            },
+            step5: {
+                "header": {
+                    "transactionDate": "{{transactionDate}}",
+                    "serviceName": "getCustomerInfo",
+                    "systemCode": "CDF",
+                    "referenceNo": "{{referenceNo}}",
+                    "channelID": "CDF"
+                },
+                "InputParam": {
+                    "cardID": "{{identityID}}",
+                    "cardType": "001",
+                    "cifNo": null,
+                    "chooseContent": "M"
+                }
+            },
+            step6: {
+                sqlTemplate: "INSERT INTO rib.tb_m_cust_info (rib_id, id_type, id_no, status, username, firstname_en, lastname_en, prefer_lang, rib_subscription, pib_subscription, first_login_date, version_no, create_channel, create_user, create_date, update_channel, update_user, update_date, pib_status, cis_id, issue_country, customer_ref_id) SELECT nextval('rib.SEQ_CUST_INFO'), 'I', '{{dbInsertIdNo}}', 'A', NULL, NULL, NULL, 'TH', 'Y', 'N', current_timestamp, 1, 'RIB', 'SYSTEM', current_timestamp, 'RIB', '{{dbInsertUpdateUser}}', current_timestamp, 'N', '{{dbInsertCisId}}', 'TH', NULL WHERE NOT EXISTS (SELECT 1 FROM rib.tb_m_cust_info WHERE cis_id = '{{dbInsertCisId}}');"
+            }
+        };
+
+        function getLocalIso8601() {
+            const now = new Date();
+            const offsetMinutes = -now.getTimezoneOffset();
+            const sign = offsetMinutes >= 0 ? '+' : '-';
+            const absMinutes = Math.abs(offsetMinutes);
+            const offsetHours = String(Math.floor(absMinutes / 60)).padStart(2, '0');
+            const offsetMins = String(absMinutes % 60).padStart(2, '0');
+
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+
+            return y + '-' + m + '-' + d + 'T' + hh + ':' + mm + ':' + ss + sign + offsetHours + ':' + offsetMins;
+        }
+
+        function getUtcIso8601() {
+            return new Date().toISOString();
+        }
+
+        function toggleSection(event) {
+            event.stopPropagation();
+            const title = event.currentTarget;
+            title.classList.toggle('collapsed');
+            title.nextElementSibling.classList.toggle('collapsed');
+        }
+
+        function toggleStep(event) {
+            event.stopPropagation();
+            const step = event.currentTarget;
+            step.classList.toggle('expanded');
+        }
+
+        function updateVariables() {
+            const identityIdElement = document.getElementById('identityID');
+            const dbInsertIdNoElement = document.getElementById('dbInsertIdNo');
+            const dbInsertCisIdElement = document.getElementById('dbInsertCisId');
+            const dbInsertUpdateUserElement = document.getElementById('dbInsertUpdateUser');
+
+            if (identityIdElement && dbInsertIdNoElement) {
+                dbInsertIdNoElement.value = identityIdElement.value;
+            }
+
+            const cifNoFromStep2 = latestGetCifData.cifNo || '';
+            if (dbInsertCisIdElement) {
+                dbInsertCisIdElement.value = cifNoFromStep2;
+            }
+            if (dbInsertUpdateUserElement) {
+                dbInsertUpdateUserElement.value = cifNoFromStep2;
+            }
+
+            const variables = {
+                identityID: document.getElementById('identityID').value,
+                identityFirstnameTh: document.getElementById('identityFirstnameTh').value,
+                identityLastnameTh: document.getElementById('identityLastnameTh').value,
+                identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
+                identityLastnameEn: document.getElementById('identityLastnameEn').value,
+                mobileNo: document.getElementById('mobileNo').value,
+                email: document.getElementById('email').value,
+                lIALLevel: document.getElementById('lIALLevel').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                image1: '', // image1 field has been removed
+                urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
+                urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
+                urlCreateMyPin: document.getElementById('urlCreateMyPin').value,
+                referenceNo: document.getElementById('referenceNo').value,
+                proxyBaseUrl: document.getElementById('proxyBaseUrl').value,
+                dbEnv: document.getElementById('dbEnv').value,
+                dbHost: document.getElementById('dbHost').value,
+                dbPort: document.getElementById('dbPort').value,
+                dbName: document.getElementById('dbName').value,
+                dbUser: document.getElementById('dbUser').value,
+                dbPassword: document.getElementById('dbPassword').value,
+                dbInsertIdNo: document.getElementById('dbInsertIdNo').value,
+                dbInsertCisId: document.getElementById('dbInsertCisId').value,
+                dbInsertUpdateUser: document.getElementById('dbInsertUpdateUser').value,
+                transactionDate: getLocalIso8601()
+            };
+
+            localStorage.setItem('apiVariablesThaiIAL13', JSON.stringify(variables));
+
+            Object.keys(requestBodies).forEach(key => {
+                const element = document.getElementById(key + '-body');
+                if (!element) {
+                    return;
+                }
+
+                const bodyStr = JSON.stringify(requestBodies[key], null, 2);
+                const display = bodyStr
+                    .replace(/{{transactionDate}}/g, variables.transactionDate)
+                    .replace(/{{referenceNo}}/g, variables.referenceNo)
+                    .replace(/{{identityID}}/g, variables.identityID)
+                    .replace(/{{identityFirstnameTh}}/g, variables.identityFirstnameTh)
+                    .replace(/{{identityLastnameTh}}/g, variables.identityLastnameTh)
+                    .replace(/{{identityFirstnameEn}}/g, variables.identityFirstnameEn)
+                    .replace(/{{identityLastnameEn}}/g, variables.identityLastnameEn)
+                    .replace(/{{mobileNo}}/g, variables.mobileNo)
+                    .replace(/{{email}}/g, variables.email)
+                    .replace(/{{lIALLevel}}/g, variables.lIALLevel)
+                    .replace(/{{dateOfBirth}}/g, variables.dateOfBirth)
+                    .replace(/{{image1}}/g, variables.image1)
+                    .replace(/{{cifNoFromGetCif}}/g, latestGetCifData.cifNo || '')
+                    .replace(/{{mobileFromGetCif}}/g, latestGetCifData.mobile || '')
+                    .replace(/{{emailFromGetCif}}/g, latestGetCifData.email || '')
+                    .replace(/{{dbInsertIdNo}}/g, variables.dbInsertIdNo)
+                    .replace(/{{dbInsertCisId}}/g, variables.dbInsertCisId)
+                    .replace(/{{dbInsertUpdateUser}}/g, variables.dbInsertUpdateUser);
+
+                element.textContent = display;
+            });
+
+            // Update URL displays for steps with dynamic endpoints
+            const urlElements = {
+                'step3-url': {
+                    template: 'POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN',
+                    vars: ['urlCreateMyPin']
+                }
+            };
+
+            Object.keys(urlElements).forEach(key => {
+                const element = document.getElementById(key);
+                if (!element) return;
+
+                let display = urlElements[key].template;
+                urlElements[key].vars.forEach(varName => {
+                    display = display.replace(new RegExp('{{' + varName + '}}', 'g'), variables[varName] || '');
+                });
+
+                // Preserve the copy button
+                element.innerHTML = '<button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>' + display;
+            });
+
+            const step4SqlElement = document.getElementById('step4-body');
+            if (step4SqlElement) {
+                const sqlText = requestBodies.step6.sqlTemplate
+                    .replace(/{{dbInsertIdNo}}/g, variables.dbInsertIdNo)
+                    .replace(/{{dbInsertCisId}}/g, variables.dbInsertCisId)
+                    .replace(/{{dbInsertUpdateUser}}/g, variables.dbInsertUpdateUser);
+                step4SqlElement.innerHTML = '<button class="copy-btn" onclick="copyToClipboard(event)">Copy</button>' + sqlText;
+            }
+        }
+
+        function resetVariables() {
+            Object.keys(defaultValues).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = defaultValues[key];
+                }
+            });
+            updateVariables();
+        }
+
+        function exportVariables() {
+            const variables = {};
+            Object.keys(defaultValues).forEach(key => {
+                variables[key] = document.getElementById(key).value;
+            });
+
+            const blob = new Blob([JSON.stringify(variables, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'api-variables-thai-ial13.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function copyToClipboard(event) {
+            event.stopPropagation();
+            const text = event.target.parentElement.innerText.replace('Copy', '').trim();
+            navigator.clipboard.writeText(text);
+            event.target.innerText = '✓ Copied!';
+            setTimeout(() => event.target.innerText = 'Copy', 2000);
+        }
+
+        function copyResponseText(event) {
+            event.stopPropagation();
+            const btn = event.target;
+            const preElement = btn.nextElementSibling;
+            if (preElement && preElement.tagName === 'PRE') {
+                const text = preElement.innerText;
+                navigator.clipboard.writeText(text);
+                btn.innerText = '✓ Copied!';
+                setTimeout(() => btn.innerText = 'Copy', 2000);
+            }
+        }
+
+        function copyCommand(command) {
+            navigator.clipboard.writeText(command);
+            alert('✓ Command copied! Paste it in your terminal.');
+        }
+
+        function detectCurrentEnv() {
+            const endpoint = (document.getElementById('urlCDFCreateCustomer') || {}).value || '';
+            return endpoint.trim().toLowerCase() === '10.208.113.123' ? 'sit' : 'uat';
+        }
+
+        function updateEnvToggleUI(env) {
+            const sitBtn = document.getElementById('btn-env-sit');
+            const uatBtn = document.getElementById('btn-env-uat');
+            const label = document.getElementById('env-active-label');
+
+            if (!sitBtn || !uatBtn) return;
+
+            if (env === 'sit') {
+                sitBtn.style.backgroundColor = '#3498db';
+                sitBtn.style.color = 'white';
+                sitBtn.style.border = 'none';
+                uatBtn.style.backgroundColor = '#ecf0ff';
+                uatBtn.style.color = '#2c3e50';
+                uatBtn.style.border = '1px solid #3498db';
+                if (label) label.textContent = 'Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]';
+            } else {
+                uatBtn.style.backgroundColor = '#27ae60';
+                uatBtn.style.color = 'white';
+                uatBtn.style.border = 'none';
+                sitBtn.style.backgroundColor = '#ecf0ff';
+                sitBtn.style.color = '#2c3e50';
+                sitBtn.style.border = '1px solid #27ae60';
+                if (label) label.textContent = 'Current: UAT [ตอนนี้ท่านเลือกเป็น UAT env.]';
+            }
+        }
+
+        function switchEnv(env) {
+            const cfg = ENV_CONFIG[env];
+            if (!cfg) return;
+
+            const fields = [
+                'urlCDFCreateCustomer',
+                'urlCDFGetCustomerInfo',
+                'urlCreateMyPin',
+                'dbEnv',
+                'dbHost',
+                'dbPassword'
+            ];
+
+            fields.forEach((fieldId) => {
+                const element = document.getElementById(fieldId);
+                if (element && Object.prototype.hasOwnProperty.call(cfg, fieldId)) {
+                    element.value = cfg[fieldId];
+                }
+            });
+
+            updateVariables();
+            updateEnvToggleUI(env);
+        }
+
+        function onDbEnvChange() {
+            const dbEnvElement = document.getElementById('dbEnv');
+            const dbHostElement = document.getElementById('dbHost');
+            const dbPasswordElement = document.getElementById('dbPassword');
+            if (!dbEnvElement || !dbHostElement || !dbPasswordElement) {
+                updateVariables();
+                return;
+            }
+
+            const envHostMap = {
+                sit: 'psql-rib-sit.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com',
+                uat: 'psql-rib-test.c4lpwdind0wa.ap-southeast-1.rds.amazonaws.com'
+            };
+
+            const envPasswordMap = {
+                sit: 'Passw0rd',
+                uat: 'zkYsx5YJ7'
+            };
+
+            const selectedEnv = dbEnvElement.value;
+            if (envHostMap[selectedEnv]) {
+                dbHostElement.value = envHostMap[selectedEnv];
+            }
+            if (envPasswordMap[selectedEnv]) {
+                dbPasswordElement.value = envPasswordMap[selectedEnv];
+            }
+
+            updateVariables();
+            updateEnvToggleUI(selectedEnv);
+        }
+
+        function generateThaiCitizenId() {
+            let first12 = '';
+            for (let i = 0; i < 12; i++) {
+                const digit = Math.floor(Math.random() * 10);
+                first12 += String(digit);
+            }
+
+            let sum = 0;
+            for (let i = 0; i < 12; i++) {
+                sum += parseInt(first12[i], 10) * (13 - i);
+            }
+
+            const checkDigit = (11 - (sum % 11)) % 10;
+            return first12 + String(checkDigit);
+        }
+
+        function randomThaiCitizenId(event) {
+            event.stopPropagation();
+            const input = document.getElementById('identityID');
+            input.value = generateThaiCitizenId();
+            updateVariables();
+        }
+
+        function generateThaiMobileNo() {
+            const prefixList = ['06', '08', '09'];
+            const prefix = prefixList[Math.floor(Math.random() * prefixList.length)];
+            let suffix = '';
+            for (let i = 0; i < 8; i++) {
+                suffix += String(Math.floor(Math.random() * 10));
+            }
+            return prefix + suffix;
+        }
+
+        function randomMobileNo(event) {
+            event.stopPropagation();
+            const mobileInput = document.getElementById('mobileNo');
+            mobileInput.value = generateThaiMobileNo();
+            updateVariables();
+        }
+
+        function randomEmail(event) {
+            event.stopPropagation();
+            const mobileValue = document.getElementById('mobileNo').value.replace(/\D/g, '');
+            const seed = mobileValue || generateThaiMobileNo();
+            const emailInput = document.getElementById('email');
+            emailInput.value = 'kkmailthai.' + seed + '@kkptest.onmicrosoft.com';
+            updateVariables();
+        }
+
+        function normalizeProxyBaseUrl(rawValue) {
+            const value = String(rawValue || '').trim();
+            if (!value) return 'http://localhost:3000';
+            return value.replace(/\/$/, '');
+        }
+
+        function getProxyCandidates() {
+            const proxyInput = document.getElementById('proxyBaseUrl');
+            const configured = normalizeProxyBaseUrl(proxyInput ? proxyInput.value : 'http://localhost:3000');
+            const candidates = [configured];
+
+            if (configured === 'http://localhost:3000') {
+                candidates.push('http://localhost:3001');
+            } else if (configured === 'http://localhost:3001') {
+                candidates.push('http://localhost:3000');
+            } else {
+                candidates.push('http://localhost:3000', 'http://localhost:3001');
+            }
+
+            return [...new Set(candidates)];
+        }
+
+        async function requestViaProxy(path, payload) {
+            const candidates = getProxyCandidates();
+            let lastError = null;
+            let lastResult = null;
+
+            for (const proxyBaseUrl of candidates) {
+                try {
+                    const response = await fetch(proxyBaseUrl + path, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (parseError) {
+                        data = {
+                            success: false,
+                            error: 'Invalid JSON response from proxy'
+                        };
+                    }
+
+                    const missingRoute = response.status === 404 || (data && data.error === 'Not found');
+                    if (missingRoute) {
+                        lastResult = { proxyBaseUrl, response, data };
+                        continue;
+                    }
+
+                    return { proxyBaseUrl, response, data };
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+
+            if (lastResult) {
+                return lastResult;
+            }
+            if (lastError) {
+                throw lastError;
+            }
+
+            return {
+                proxyBaseUrl: candidates[0],
+                response: null,
+                data: { success: false, error: 'Unable to reach proxy' }
+            };
+        }
+
+        async function sendRequest(event, url, stepId) {
+            event.preventDefault();
+            event.stopPropagation();
+            const btn = event.target;
+            const responseArea = document.getElementById('response-' + stepId);
+
+            const variables = {
+                identityID: document.getElementById('identityID').value,
+                identityFirstnameTh: document.getElementById('identityFirstnameTh').value,
+                identityLastnameTh: document.getElementById('identityLastnameTh').value,
+                identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
+                identityLastnameEn: document.getElementById('identityLastnameEn').value,
+                mobileNo: document.getElementById('mobileNo').value,
+                email: document.getElementById('email').value,
+                lIALLevel: document.getElementById('lIALLevel').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                image1: '', // image1 field has been removed
+                urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
+                urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
+                urlCreateMyPin: document.getElementById('urlCreateMyPin').value,
+                referenceNo: document.getElementById('referenceNo').value,
+                proxyBaseUrl: document.getElementById('proxyBaseUrl').value,
+                transactionDate: getLocalIso8601()
+            };
+
+            const finalUrl = url
+                .replace('{{urlCDFCreateCustomer}}', variables.urlCDFCreateCustomer)
+                .replace('{{urlCDFGetCustomerInfo}}', variables.urlCDFGetCustomerInfo)
+                .replace('{{urlCreateMyPin}}', variables.urlCreateMyPin);
+
+            if (stepId === 'step3' && (!latestGetCifData.cifNo || !latestGetCifData.mobile || !latestGetCifData.email)) {
+                responseArea.classList.add('show');
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+                responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>โปรดรัน Step 2 (Get Customer Info) ก่อน เพื่อดึง CIF, mobile และ email</div>';
+                return;
+            }
+
+            const selectedBody = requestBodies[stepId] || requestBodies.step1;
+            let payload = JSON.stringify(selectedBody)
+                .replace(/{{transactionDate}}/g, variables.transactionDate)
+                .replace(/{{referenceNo}}/g, variables.referenceNo)
+                .replace(/{{identityID}}/g, variables.identityID)
+                .replace(/{{identityFirstnameTh}}/g, variables.identityFirstnameTh)
+                .replace(/{{identityLastnameTh}}/g, variables.identityLastnameTh)
+                .replace(/{{identityFirstnameEn}}/g, variables.identityFirstnameEn)
+                .replace(/{{identityLastnameEn}}/g, variables.identityLastnameEn)
+                .replace(/{{mobileNo}}/g, variables.mobileNo)
+                .replace(/{{email}}/g, variables.email)
+                .replace(/{{lIALLevel}}/g, variables.lIALLevel)
+                .replace(/{{dateOfBirth}}/g, variables.dateOfBirth)
+                .replace(/{{image1}}/g, variables.image1)
+                .replace(/{{cifNoFromGetCif}}/g, latestGetCifData.cifNo || '')
+                .replace(/{{mobileFromGetCif}}/g, latestGetCifData.mobile || '')
+                .replace(/{{emailFromGetCif}}/g, latestGetCifData.email || '');
+
+            payload = JSON.parse(payload);
+
+            let requestHeaders = null;
+            if (stepId === 'step3') {
+                requestHeaders = {
+                    'Content-Type': 'application/json',
+                    'request-id': variables.referenceNo,
+                    'caller-id': 'RIB',
+                    'application-channel': 'RIBMobile',
+                    'transaction-datetime': getUtcIso8601()
+                };
+            }
+
+            btn.disabled = true;
+            responseArea.classList.add('show');
+            responseArea.style.borderLeftColor = '#f39c12';
+            responseArea.style.backgroundColor = '#fff3e0';
+            responseArea.innerHTML = '<div class="response-header">⏳ Sending request...</div><div>URL: ' + finalUrl + '</div><div>Proxy: ' + normalizeProxyBaseUrl(variables.proxyBaseUrl) + '</div>';
+
+            try {
+                const proxyResult = await requestViaProxy('/api/proxy', {
+                    url: finalUrl,
+                    payload,
+                    headers: requestHeaders
+                });
+                const data = proxyResult.data;
+                if (data.success) {
+                    if (stepId === 'step2') {
+                        const cifInfo = (data.body && data.body.CIFInfo)
+                            || (data.body && data.body.OutputParam && data.body.OutputParam.CIFInfo)
+                            || null;
+                        if (cifInfo) {
+                            latestGetCifData = {
+                                cifNo: cifInfo.cifNo || '',
+                                mobile: cifInfo.mobile || '',
+                                email: cifInfo.email || ''
+                            };
+                            updateVariables();
+                        }
+                    }
+
+                    responseArea.style.borderLeftColor = '#27ae60';
+                    responseArea.style.backgroundColor = '#e8f5e9';
+                    const bodyStr = JSON.stringify(data.body, null, 2);
+                    responseArea.innerHTML = '<div class="response-header">✅ Success (Status: ' + data.status + ')</div><div style="margin: 8px 0; font-size: 12px;">Proxy: ' + proxyResult.proxyBaseUrl + '</div><button class="copy-btn" onclick="copyResponseText(event)">Copy</button><pre>' + bodyStr + '</pre>';
+                } else {
+                    responseArea.style.borderLeftColor = '#e74c3c';
+                    responseArea.style.backgroundColor = '#ffebee';
+                    const bodyStr = JSON.stringify(data, null, 2);
+                    responseArea.innerHTML = '<div class="response-header">❌ Error</div><div style="margin: 8px 0; font-size: 12px;">Proxy: ' + proxyResult.proxyBaseUrl + '</div><button class="copy-btn" onclick="copyResponseText(event)">Copy</button><pre>' + bodyStr + '</pre>';
+                }
+            } catch (error) {
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+                responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>' + error.message + '</div><div style="margin-top: 8px; font-size: 10px;">💡 ตรวจสอบ Proxy Base URL และให้ proxy server ทำงาน (localhost:3000 หรือ localhost:3001)</div>';
+            }
+
+            btn.disabled = false;
+        }
+
+        async function insertCustomerInfo(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const btn = event.target;
+            const responseArea = document.getElementById('response-step4');
+
+            const dbEnv = document.getElementById('dbEnv').value;
+            const dbHost = document.getElementById('dbHost').value.trim();
+            const dbPort = document.getElementById('dbPort').value.trim();
+            const dbName = document.getElementById('dbName').value.trim();
+            const dbUser = document.getElementById('dbUser').value.trim();
+            const dbPassword = document.getElementById('dbPassword').value;
+            const idNo = document.getElementById('dbInsertIdNo').value.trim();
+            const cisId = document.getElementById('dbInsertCisId').value.trim();
+            const updateUser = document.getElementById('dbInsertUpdateUser').value.trim();
+
+            if (!dbHost || !dbPort || !dbName || !dbUser || !dbPassword || !idNo || !cisId || !updateUser) {
+                responseArea.classList.add('show');
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+                responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>กรอกข้อมูล DB และค่า Insert ให้ครบก่อน</div>';
+                return;
+            }
+
+            btn.disabled = true;
+            responseArea.classList.add('show');
+            responseArea.style.borderLeftColor = '#f39c12';
+            responseArea.style.backgroundColor = '#fff3e0';
+            const selectedProxyBase = normalizeProxyBaseUrl(document.getElementById('proxyBaseUrl').value);
+            responseArea.innerHTML = '<div class="response-header">⏳ Inserting into DB...</div><div>Environment: ' + dbEnv.toUpperCase() + '</div><div>Proxy: ' + selectedProxyBase + '</div>';
+
+            const requestPayload = {
+                env: dbEnv,
+                connection: {
+                    host: dbHost,
+                    port: Number(dbPort),
+                    database: dbName,
+                    user: dbUser,
+                    password: dbPassword
+                },
+                values: {
+                    idNo,
+                    cisId,
+                    updateUser
+                }
+            };
+
+            try {
+                const proxyResult = await requestViaProxy('/api/db/insert-cust-info', requestPayload);
+                const data = proxyResult.data;
+                const proxyBaseUrl = proxyResult.proxyBaseUrl;
+
+                if (data.success) {
+                    responseArea.style.borderLeftColor = '#27ae60';
+                    responseArea.style.backgroundColor = '#e8f5e9';
+                    const detail = JSON.stringify(data, null, 2);
+                    responseArea.innerHTML = '<div class="response-header">✅ DB Insert Success</div><div style="margin: 8px 0; font-size: 12px;">Proxy: ' + proxyBaseUrl + '</div><button class="copy-btn" onclick="copyResponseText(event)">Copy</button><pre>' + detail + '</pre>';
+                } else {
+                    responseArea.style.borderLeftColor = '#e74c3c';
+                    responseArea.style.backgroundColor = '#ffebee';
+                    const detail = JSON.stringify(data, null, 2);
+                    const proxyHint = data && data.error === 'Not found'
+                        ? '<div style="margin: 8px 0; font-size: 12px;">💡 Proxy ที่ port 3000 ไม่มี endpoint DB insert ให้รัน proxy-server.js เวอร์ชันล่าสุด หรือใช้ port 3001</div>'
+                        : '';
+                    responseArea.innerHTML = '<div class="response-header">❌ DB Insert Error</div>' + proxyHint + '<button class="copy-btn" onclick="copyResponseText(event)">Copy</button><pre>' + detail + '</pre>';
+                }
+            } catch (error) {
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+                responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>' + error.message + '</div><div style="margin-top: 8px; font-size: 12px;">💡 ตรวจสอบว่า proxy server เวอร์ชันล่าสุดรันอยู่ (port 3000 หรือ 3001)</div>';
+            }
+
+            btn.disabled = false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const saved = localStorage.getItem('apiVariablesThaiIAL13');
+            if (saved) {
+                try {
+                    const variables = JSON.parse(saved);
+                    Object.keys(variables).forEach(key => {
+                        const input = document.getElementById(key);
+                        if (input) {
+                            input.value = variables[key];
+                        }
+                    });
+                } catch (e) {
+                    console.warn('Failed to parse saved variables', e);
+                }
+            }
+
+            updateVariables();
+            updateEnvToggleUI(detectCurrentEnv());
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Device Better App</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background-color: #ef4444;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-title.collapsible {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title.collapsible:hover {
+            background-color: #dc2626;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .section-title.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .variable-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid #ef4444;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: #ef4444;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .variable-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .btn-copy {
+            background-color: #0ea5a4;
+            color: white;
+        }
+
+        .detail-value {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #ef4444;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 340px;
+            overflow: auto;
+        }
+
+        .response-area {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #ddd;
+            display: none;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .response-area.show {
+            display: block;
+        }
+
+        .footer {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 Remove Device Better App</h1>
+            <p>เครื่องมือจัดกการลบรายการอุปกรณ์ด้วย เลขบัตรประชาชน 13 หลัก</p>
+        </header>
+
+        <div class="section" style="margin-bottom: 14px;">
+            <div class="section-content" style="padding: 12px 14px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="Main_Menu.html" style="text-decoration: none;"><button class="btn" style="background-color: #0f766e; color: white;">Main Menu</button></a>
+                    <a href="Create_Customer_SIT_Thai_IAL23.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.3 </button></a>
+                    <a href="Create_Customer_SIT_Thai_IAL13.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 1.3</button></a>
+                    <a href="Create_Customer_SIT_Thai_IAL21.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.1</button></a>
+                    <a href="Create_Customer_SIT_Foreigner.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Foreigner Customer</button></a>
+                    <a href="KKP_Channel_Verification.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button></a>
+                    <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button></a>
+                    <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Convert Image Base64</button></a>
+                    <a href="Remove_Device_Better_App.html" style="text-decoration: none;"><button class="btn" style="background-color: #ef4444; color: white;">Remove Device</button></a>
+                    <a href="Transfer_Money_ATS_SG.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Topup Money</button></a>
+                    <a href="Get_Customer_Profile_By_AccountNo.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Profile by Account</button></a>
+                    <a href="Get_Account_From_CID.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Account from CID</button></a>
+                    <a href="Cancel_State_For_Onboarding.html" style="text-decoration: none;"><button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Cancel State</button></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="env-toggle-bar" class="section" style="margin-bottom: 14px; border-top: 4px solid #2563eb;">
+            <div class="section-content" style="padding: 14px 16px;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 13px; color: #2c3e50;">Environment:</span>
+                    <button id="btn-env-sit" class="btn" onclick="switchEnv('sit')" style="background-color: #2563eb; color: white; padding: 8px 20px; font-size: 13px;">SIT</button>
+                    <button id="btn-env-uat" class="btn" onclick="switchEnv('uat')" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #2563eb; padding: 8px 20px; font-size: 13px;">UAT</button>
+                    <span id="env-active-label" style="font-size: 12px; color: #7f8c8d; margin-left: 4px;">Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Customer Data</div>
+            <div class="section-content">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Thai Citizen ID</label>
+                        <input type="text" class="variable-input" id="identityID" value="1101700234561" oninput="updatePreview()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Kk-Cis-Id (from Step 1)</label>
+                        <input type="text" class="variable-input" id="kkCisId" value="" readonly style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title collapsible collapsed" onclick="toggleSection(event)"><span>Request Input</span><span class="toggle-icon">▼</span></div>
+            <div class="section-content collapsed">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Proxy Base URL</label>
+                        <input type="text" class="variable-input" id="proxyBaseUrl" value="http://localhost:3000" oninput="updatePreview()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Request-Id (for remove)</label>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <input type="text" class="variable-input" id="requestId" value="26623590-15f3-4d3b-8a4f-0ae5478c178e" oninput="updatePreview()">
+                            <button class="btn btn-copy" type="button" onclick="generateRequestId()" style="white-space:nowrap;">Generate</button>
+                        </div>
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Step 1: Get customer info)</label>
+                        <input type="text" class="variable-input" id="endpointGetCustomerInfo" value="http://10.208.113.123/CDF_NEW/api/getCustomerInfo" readonly style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Endpoint (Step 2: Remove all device list)</label>
+                        <input type="text" class="variable-input" id="endpointRemove" value="http://ribs.kiatnakinbank.com/device-management-service/api-internal/v1/remove-all-device-list-by-cis-id" readonly style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title collapsible collapsed" onclick="toggleSection(event)"><span>cURL Preview</span><span class="toggle-icon">▼</span></div>
+            <div class="section-content collapsed">
+                <div style="font-size:12px; color:#64748b; margin-bottom:8px;">Step 1: Get customer info</div>
+                <div class="detail-value" id="curl-step1-preview"></div>
+                <div style="font-size:12px; color:#64748b; margin:14px 0 8px;">Step 2: Remove all device list</div>
+                <div class="detail-value" id="curl-remove-preview"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">API Steps</div>
+            <div class="section-content">
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="getCustomerInfoStep1()">Step 1: Get Customer Info</button>
+                    <button class="btn btn-danger" onclick="removeAllDeviceList()">Step 2: Remove All Device List</button>
+                </div>
+                <div id="response-area" class="response-area"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Raw Response</div>
+            <div class="section-content">
+                <div class="detail-value" id="raw-response">No response yet</div>
+            </div>
+        </div>
+
+        <div class="footer">📄 Remove Device Better App | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'removeDeviceBetterAppState';
+        const ENDPOINT_PATH_GET_CUSTOMER_INFO = '/CDF_NEW/api/getCustomerInfo';
+        const ENDPOINT_PATH_REMOVE = '/device-management-service/api-internal/v1/remove-all-device-list-by-cis-id';
+        const ENV_HOST_CONFIG = {
+            sit: {
+                cdfHost: '10.208.113.123',
+                deviceHost: 'ribs.kiatnakinbank.com'
+            },
+            uat: {
+                cdfHost: 'cdf.kiatnakinbank.com',
+                deviceHost: 'ribu.kiatnakinbank.com'
+            }
+        };
+
+        function toggleSection(event) {
+            event.stopPropagation();
+            const title = event.currentTarget;
+            title.classList.toggle('collapsed');
+            title.nextElementSibling.classList.toggle('collapsed');
+        }
+
+        function normalizeProxyBaseUrl(rawValue) {
+            const value = String(rawValue || '').trim();
+            if (!value) return 'http://localhost:3000';
+            return value.replace(/\/$/, '');
+        }
+
+        function getProxyCandidates() {
+            const configured = normalizeProxyBaseUrl(document.getElementById('proxyBaseUrl').value);
+            const candidates = [configured, 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
+            return [...new Set(candidates)];
+        }
+
+        function buildEndpoint(host, path) {
+            return 'http://' + host + path;
+        }
+
+        function setEndpointsByEnv(env) {
+            const cfg = ENV_HOST_CONFIG[env];
+            if (!cfg) return;
+            document.getElementById('endpointGetCustomerInfo').value = buildEndpoint(cfg.cdfHost, ENDPOINT_PATH_GET_CUSTOMER_INFO);
+            document.getElementById('endpointRemove').value = buildEndpoint(cfg.deviceHost, ENDPOINT_PATH_REMOVE);
+        }
+
+        function detectCurrentEnv() {
+            const endpoint = String(document.getElementById('endpointRemove').value || '').toLowerCase();
+            return endpoint.includes('ribu.kiatnakinbank.com') ? 'uat' : 'sit';
+        }
+
+        function updateEnvToggleUI(env) {
+            const sitBtn = document.getElementById('btn-env-sit');
+            const uatBtn = document.getElementById('btn-env-uat');
+            const label = document.getElementById('env-active-label');
+
+            if (!sitBtn || !uatBtn) return;
+
+            if (env === 'sit') {
+                sitBtn.style.backgroundColor = '#2563eb';
+                sitBtn.style.color = 'white';
+                sitBtn.style.border = 'none';
+                uatBtn.style.backgroundColor = '#ecf0ff';
+                uatBtn.style.color = '#2c3e50';
+                uatBtn.style.border = '1px solid #2563eb';
+                if (label) label.textContent = 'Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]';
+            } else {
+                uatBtn.style.backgroundColor = '#0ea5a4';
+                uatBtn.style.color = 'white';
+                uatBtn.style.border = 'none';
+                sitBtn.style.backgroundColor = '#ecf0ff';
+                sitBtn.style.color = '#2c3e50';
+                sitBtn.style.border = '1px solid #0ea5a4';
+                if (label) label.textContent = 'Current: UAT [ตอนนี้ท่านเลือกเป็น UAT env.]';
+            }
+        }
+
+        function switchEnv(env) {
+            if (!ENV_HOST_CONFIG[env]) return;
+            setEndpointsByEnv(env);
+            updateEnvToggleUI(env);
+            updatePreview();
+        }
+
+        function getState() {
+            return {
+                identityID: document.getElementById('identityID').value.trim(),
+                kkCisId: document.getElementById('kkCisId').value.trim(),
+                proxyBaseUrl: document.getElementById('proxyBaseUrl').value.trim(),
+                requestId: document.getElementById('requestId').value.trim(),
+                endpointGetCustomerInfo: document.getElementById('endpointGetCustomerInfo').value.trim(),
+                endpointRemove: document.getElementById('endpointRemove').value.trim()
+            };
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
+        }
+
+        function loadState() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            try {
+                const state = JSON.parse(raw);
+                if (state.identityID) document.getElementById('identityID').value = state.identityID;
+                if (state.kkCisId) document.getElementById('kkCisId').value = state.kkCisId;
+                if (state.proxyBaseUrl) document.getElementById('proxyBaseUrl').value = state.proxyBaseUrl;
+                if (state.requestId) document.getElementById('requestId').value = state.requestId;
+                if (state.endpointGetCustomerInfo) document.getElementById('endpointGetCustomerInfo').value = state.endpointGetCustomerInfo;
+                if (state.endpointRemove) document.getElementById('endpointRemove').value = state.endpointRemove;
+            } catch (err) {
+                console.warn('Failed to load state', err);
+            }
+        }
+
+        function generateRequestId() {
+            let value = '';
+            if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+                value = crypto.randomUUID();
+            } else {
+                value = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+            document.getElementById('requestId').value = value;
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const s = getState();
+            const step1Body = {
+                header: {
+                    transactionDate: new Date().toISOString(),
+                    serviceName: 'getCustomerInfo',
+                    systemCode: 'CDF',
+                    referenceNo: s.requestId,
+                    channelID: 'CDF'
+                },
+                InputParam: {
+                    cardID: s.identityID,
+                    cardType: '001',
+                    cifNo: null
+                }
+            };
+
+            const step1Curl = [
+                "curl --location '" + s.endpointGetCustomerInfo + "'",
+                "--header 'Content-Type: application/json'",
+                "--data '" + JSON.stringify(step1Body) + "'"
+            ].join(' \\\n');
+
+            const removeBody = { requestChannel: 'CMS_BACKOFFICE' };
+            const removeCurl = [
+                "curl --location --request PUT '" + s.endpointRemove + "'",
+                "--header 'Kk-Cis-Id: " + s.kkCisId + "'",
+                "--header 'Request-Id: " + s.requestId + "'",
+                "--header 'caller-id: RIB'",
+                "--header 'application-channel: RIBMobile'",
+                "--header 'transaction-datetime: " + new Date().toISOString() + "'",
+                "--header 'Content-Type: application/json'",
+                "--data '" + JSON.stringify(removeBody) + "'"
+            ].join(' \\\n');
+
+            document.getElementById('curl-step1-preview').textContent = step1Curl;
+            document.getElementById('curl-remove-preview').textContent = removeCurl;
+            saveState();
+        }
+
+        function showResponse(type, html) {
+            const el = document.getElementById('response-area');
+            el.classList.add('show');
+            if (type === 'success') {
+                el.style.borderLeftColor = '#16a34a';
+                el.style.backgroundColor = '#e8f5e9';
+            } else if (type === 'pending') {
+                el.style.borderLeftColor = '#f39c12';
+                el.style.backgroundColor = '#fff3e0';
+            } else {
+                el.style.borderLeftColor = '#e74c3c';
+                el.style.backgroundColor = '#ffebee';
+            }
+            el.innerHTML = html;
+        }
+
+        async function requestViaProxy(path, payload) {
+            const candidates = getProxyCandidates();
+            let lastError = null;
+            let lastResult = null;
+
+            for (const proxyBaseUrl of candidates) {
+                try {
+                    const response = await fetch(proxyBaseUrl + path, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (parseError) {
+                        data = {
+                            success: false,
+                            error: 'Invalid JSON response from proxy'
+                        };
+                    }
+
+                    const missingRoute = response.status === 404 || (data && data.error === 'Not found');
+                    if (missingRoute) {
+                        lastResult = { proxyBaseUrl, response, data };
+                        continue;
+                    }
+
+                    return { proxyBaseUrl, response, data };
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+
+            if (lastResult) return lastResult;
+            if (lastError) throw lastError;
+
+            return {
+                proxyBaseUrl: candidates[0],
+                response: null,
+                data: { success: false, error: 'Unable to reach proxy' }
+            };
+        }
+
+        async function getCustomerInfoStep1() {
+            const s = getState();
+            if (!s.identityID || !s.endpointGetCustomerInfo) {
+                showResponse('error', '<div><strong>Error</strong></div><div>กรุณากรอก Thai Citizen ID และตรวจสอบ Endpoint ของ Step 1</div>');
+                return;
+            }
+
+            showResponse('pending', '<div><strong>Sending Step 1 request...</strong></div><div style="margin-top:4px;">' + s.endpointGetCustomerInfo + '</div>');
+
+            try {
+                const proxyResult = await requestViaProxy('/api/proxy', {
+                    method: 'POST',
+                    url: s.endpointGetCustomerInfo,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    payload: {
+                        header: {
+                            transactionDate: new Date().toISOString(),
+                            serviceName: 'getCustomerInfo',
+                            systemCode: 'CDF',
+                            referenceNo: s.requestId,
+                            channelID: 'CDF'
+                        },
+                        InputParam: {
+                            cardID: s.identityID,
+                            cardType: '001',
+                            cifNo: null
+                        }
+                    }
+                });
+
+                const data = proxyResult.data || {};
+                document.getElementById('raw-response').textContent = JSON.stringify(data, null, 2);
+
+                if (!data.success) {
+                    showResponse('error', '<div><strong>Error</strong></div><div style="margin-top:4px;">Proxy: ' + proxyResult.proxyBaseUrl + '</div><div style="margin-top:4px;">' + (data.error || 'Unknown error') + '</div>');
+                    return;
+                }
+
+                const body = data.body || {};
+                const cifNo =
+                    (body.CIFInfo && body.CIFInfo.cifNo)
+                    || (body.OutputParam && body.OutputParam.CIFInfo && body.OutputParam.CIFInfo.cifNo)
+                    || '';
+
+                if (!cifNo) {
+                    showResponse('error', '<div><strong>Step 1 Success แต่ไม่พบ cifNo</strong></div><div style="margin-top:4px;">ตรวจสอบ response ของ getCustomerInfo</div>');
+                    return;
+                }
+
+                document.getElementById('kkCisId').value = cifNo;
+                updatePreview();
+
+                showResponse('success', '<div><strong>Step 1 Success</strong></div><div style="margin-top:4px;">Proxy: ' + proxyResult.proxyBaseUrl + '</div><div style="margin-top:4px;">cifNo: ' + cifNo + '</div><div style="margin-top:4px;">พร้อมใช้งาน Step 2</div>');
+            } catch (error) {
+                showResponse('error', '<div><strong>Error</strong></div><div style="margin-top:4px;">' + error.message + '</div>');
+            }
+        }
+
+        async function removeAllDeviceList() {
+            const s = getState();
+            if (!s.kkCisId || !s.requestId || !s.endpointRemove) {
+                showResponse('error', '<div><strong>Error</strong></div><div>กรุณารัน Step 1 เพื่อให้ได้ cifNo และกรอก Request-Id ให้ครบก่อน</div>');
+                return;
+            }
+
+            showResponse('pending', '<div><strong>Sending PUT request...</strong></div><div style="margin-top:4px;">' + s.endpointRemove + '</div>');
+
+            try {
+                const proxyResult = await requestViaProxy('/api/proxy', {
+                    method: 'PUT',
+                    url: s.endpointRemove,
+                    headers: {
+                        'Kk-Cis-Id': s.kkCisId,
+                        'Request-Id': s.requestId,
+                        'caller-id': 'RIB',
+                        'application-channel': 'RIBMobile',
+                        'transaction-datetime': new Date().toISOString(),
+                        'Content-Type': 'application/json'
+                    },
+                    payload: {
+                        requestChannel: 'CMS_BACKOFFICE'
+                    }
+                });
+
+                const data = proxyResult.data || {};
+                document.getElementById('raw-response').textContent = JSON.stringify(data, null, 2);
+
+                const httpStatus = data.status ? parseInt(data.status, 10) : 0;
+                if (!data.success || (httpStatus && httpStatus >= 400)) {
+                    const errDetail = data.error || (data.body ? JSON.stringify(data.body) : 'Unknown error');
+                    showResponse('error', '<div><strong>Error (HTTP ' + (httpStatus || '?') + ')</strong></div><div style="margin-top:4px;">Proxy: ' + proxyResult.proxyBaseUrl + '</div><div style="margin-top:4px;">' + errDetail + '</div>');
+                    return;
+                }
+
+                showResponse('success', '<div><strong>Success</strong></div><div style="margin-top:4px;">Proxy: ' + proxyResult.proxyBaseUrl + '</div><div style="margin-top:4px;">Status: ' + data.status + '</div>');
+            } catch (error) {
+                showResponse('error', '<div><strong>Error</strong></div><div style="margin-top:4px;">' + error.message + '</div>');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            if (!document.getElementById('endpointGetCustomerInfo').value || !document.getElementById('endpointRemove').value) {
+                setEndpointsByEnv('sit');
+            }
+            updateEnvToggleUI(detectCurrentEnv());
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

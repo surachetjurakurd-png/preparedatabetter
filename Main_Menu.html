@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Menu - Script Create Customer</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0ea5a4 100%);
+            color: white;
+            border-radius: 14px;
+            padding: 26px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .section h2 {
+            font-size: 17px;
+            margin-bottom: 12px;
+            color: #334155;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .menu-card {
+            display: block;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            padding: 14px;
+            background: #f8fafc;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+            color: #1f2937;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(30, 41, 59, 0.12);
+            border-color: #93c5fd;
+        }
+
+        .menu-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .menu-desc {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        .menu-card.primary {
+            border: 2px solid #2563eb;
+            background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🐤 Welcome to Onboarding Squad Phoenix (Equinox x Aurora)</h1>
+            <p>เอาไว้ใช้สำหรับ Prepare Data for Onboarding Module ของ KKP Better</p>
+        </div>
+
+        <div class="section">
+            <h2>Primary Feature</h2>
+            <div class="menu-grid">
+                <a class="menu-card primary" href="Create_Customer_SIT_Thai_IAL23.html">
+                    <div class="menu-title">🇹🇭 Thai Customer IAL 2.3 </div>
+                    <div class="menu-desc">สร้างลูกค้าชาวไทย Default IAL 2.3</div>
+                </a>
+                <a class="menu-card primary" href="Create_Customer_SIT_Thai_IAL13.html">
+                    <div class="menu-title">🇹🇭 Thai Customer IAL 1.3</div>
+                    <div class="menu-desc">สร้างลูกค้าชาวไทย Default IAL 1.3</div>
+                </a>
+                <a class="menu-card primary" href="Create_Customer_SIT_Thai_IAL21.html">
+                    <div class="menu-title">🇹🇭 Thai Customer IAL 2.1</div>
+                    <div class="menu-desc">สร้างลูกค้าชาวไทย Default IAL 2.1</div>
+                </a>
+                <a class="menu-card primary" href="Create_Customer_SIT_Foreigner.html">
+                    <div class="menu-title">🌐 Foreigner Customer</div>
+                    <div class="menu-desc">สร้างลูกค้าชาวต่างชาติ Foreigner</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Other Tools</h2>
+            <div class="menu-grid">
+                <a class="menu-card" href="KKP_Channel_Verification.html">
+                    <div class="menu-title">🔐 KKP Channel Verification</div>
+                    <div class="menu-desc">ใช้สำหรับ Bypass การยืนยันตัวตนผ่าน KKP</div>
+                </a>
+                <a class="menu-card" href="Get_Customer_Image_Viewer.html">
+                    <div class="menu-title">🖼️ Get Customer Image </div>
+                    <div class="menu-desc">ตรวจสอบใบหน้าของ Customer จากเลขบัตรประชาชน</div>
+                </a>
+                <a class="menu-card" href="Local_Image_Base64_Converter.html">
+                    <div class="menu-title">🧰 Convert image to Base64</div>
+                    <div class="menu-desc">เลือกรูปจากเครื่อง (ไม่เกิน 2MB) แล้วแปลงเป็น Base64</div>
+                </a>
+                <a class="menu-card" href="Remove_Device_Better_App.html">
+                    <div class="menu-title">📱 Remove Device</div>
+                    <div class="menu-desc">ลบอุปกรณ์จาก KKP Better ด้วยเลขบัตรประชาชน</div>
+                </a>
+                <a class="menu-card" href="Transfer_Money_ATS_SG.html">
+                    <div class="menu-title">💰 เติมเงินเข้าบัญชีผ่าน Service ATS</div>
+                    <div class="menu-desc">โอน/เติมเงินเข้าบัญชีผ่าน Service ATS รองรับ SIT และ UAT</div>
+                </a>
+                <a class="menu-card" href="Get_Customer_Profile_By_AccountNo.html">
+                    <div class="menu-title">🔎 Get Customer Profile From Account number</div>
+                    <div class="menu-desc">ค้นหา Customer Profile จากเลขที่บัญชี Account Number</div>
+                </a>
+                <a class="menu-card" href="Get_Account_From_CID.html">
+                    <div class="menu-title">🧾 Get Account from Customer ID</div>
+                    <div class="menu-desc">ค้นหา Account Number ทั้งหมดจาก Customer ID ผ่าน ACS Service</div>
+                </a>
+                <a class="menu-card" href="Cancel_State_For_Onboarding.html">
+                    <div class="menu-title">🛑 Cancel State For Onboarding</div>
+                    <div class="menu-desc">Cancel Resume State เมื่อผู้ใช้ไม่สามารถทำรายการต่อได้</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section setup-section" style="border-top: 3px solid #ffc107;">
+            <h2 class="setup-header" onclick="toggleSetup(event)" style="color: #b45309; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;">
+                <span>⚙️ Setup Required - โปรดอ่านให้ครบ ก่อนใช้งานเว็บ</span>
+                <span class="setup-toggle-icon" style="font-size: 18px; transition: transform 0.3s; transform: rotate(0deg);">▼</span>
+            </h2>
+            <div class="setup-body" style="margin-top: 12px; display: block;">
+                <p style="margin-bottom: 12px; color: #b45309"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
+                <ol style="margin-left: 20px; margin-top: 8px; color: #334155;">
+                    <li style="margin-bottom: 12px;"><strong>เปิด Terminal บน OS Mac หรือ CMD บน Windows </strong></li>
+                    <li style="margin-bottom: 12px; color: #1002ab"><strong>เปลี่ยนไปยังโฟลเดอร์ที่มี proxy-server.js</strong> (เช่น cd ./Documents/Download/WebCreateForeigner) หากเป็น Mac OS สามารถคลิกขวาแล้วเลือก New Terminal at Folder </li>
+                    <li style="margin-bottom: 12px;"><strong>รันคำสั่ง proxy server:</strong>
+                        <div style="background-color: #f8fafc; border-left: 3px solid #ffc107; padding: 10px 15px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; margin-top: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px;" onclick="copyCommand('node proxy-server.js', this)" title="คลิกเพื่อคัดลอก"><span class="cmd-text">node proxy-server.js</span><span style="font-size: 11px; color: #b45309; white-space: nowrap;">📋 Copy</span></div>
+                    </li>
+                    <li style="margin-bottom: 12px;"><strong>รอจนเห็น:</strong> ✅ Proxy server running at http://localhost:3000 อันเป็นใช้ได้ และห้ามปิด Terminal หรือ CMD ขณะใช้งานเว็บ</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="footer"> 📂 WEB Create Customer | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</div>
+    </div>
+    <script>
+        function toggleSetup(event) {
+            event.stopPropagation();
+            const header = event.currentTarget;
+            const section = header.closest('.setup-section');
+            const body = section.querySelector('.setup-body');
+            const icon = header.querySelector('.setup-toggle-icon');
+            const collapsed = body.style.display === 'none';
+            body.style.display = collapsed ? '' : 'none';
+            icon.style.transform = collapsed ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            let ok = false;
+            try {
+                ok = document.execCommand('copy');
+            } catch (e) {
+                ok = false;
+            }
+            document.body.removeChild(ta);
+            return ok;
+        }
+
+        function showCopied(el) {
+            if (!el) return;
+            const label = el.querySelector('span:last-child');
+            if (!label) return;
+            const original = label.textContent;
+            label.textContent = '✅ Copied!';
+            label.style.color = '#16a34a';
+            setTimeout(function() {
+                label.textContent = original;
+                label.style.color = '#b45309';
+            }, 1500);
+        }
+
+        function copyCommand(text, el) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showCopied(el);
+                }).catch(function() {
+                    if (fallbackCopy(text)) showCopied(el);
+                });
+            } else {
+                if (fallbackCopy(text)) showCopied(el);
+            }
+        }
+    </script>
+</body>
+</html>

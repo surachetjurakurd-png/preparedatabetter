@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert image to Base64 Converter</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background-color: #ef4444;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .variable-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid #ef4444;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: #ef4444;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .variable-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .hint-text {
+            margin-top: 6px;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-copy {
+            background-color: #0ea5a4;
+            color: white;
+        }
+
+        .response-area {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #ddd;
+            display: block;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .detail-value {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #ef4444;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow: auto;
+        }
+
+        .image-preview-wrap {
+            margin-top: 12px;
+            padding: 12px;
+            border: 1px solid #fee2e2;
+            border-radius: 6px;
+            background: #fff1f2;
+            display: none;
+        }
+
+        .image-preview-wrap.show {
+            display: block;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            max-width: 100%;
+            max-height: 480px;
+            border-radius: 6px;
+            border: 1px solid #fecaca;
+            background: white;
+            object-fit: contain;
+        }
+
+        .footer {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧰 Image to Base64 Converter</h1>
+            <p>เลือกไฟล์รูปจากเครื่อง (ไม่เกิน 2MB) แล้วแปลงเป็น Base64</p>
+        </header>
+
+        <div class="section" style="margin-bottom: 14px;">
+            <div class="section-content" style="padding: 12px 14px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="Main_Menu.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #0f766e; color: white;">Main Menu</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL23.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.3 </button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL13.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 1.3</button>
+                    </a>
+                    </a>
+                        <a href="Create_Customer_SIT_Thai_IAL21.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.1</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Foreigner.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Foreigner Customer</button>
+                    </a>
+                    <a href="KKP_Channel_Verification.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button>
+                    </a>
+                    <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button>
+                    </a>
+                    <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ef4444; color: white;">Convert image to Base64</button>
+                    </a>
+                    <a href="Remove_Device_Better_App.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Remove Device</button>
+                    </a>
+                    <a href="Transfer_Money_ATS_SG.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Topup Money</button>
+                    </a>
+                    <a href="Get_Customer_Profile_By_AccountNo.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Profile by Account</button>
+                    </a>
+                    <a href="Get_Account_From_CID.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Account from CID</button>
+                    </a>
+                    <a href="Cancel_State_For_Onboarding.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Cancel State</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Step 1: Browse รูปจากเครื่อง</div>
+            <div class="section-content">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Browse Image (Max 2MB)</label>
+                        <input type="file" class="variable-input" id="local-image-file" accept="image/*" onchange="handleLocalImageFile(event)">
+                        <div class="hint-text">รองรับไฟล์รูปทุกชนิดที่ browser อ่านได้ และต้องมีขนาดไม่เกิน 2MB</div>
+                    </div>
+                </div>
+
+                <div id="local-image-status" class="response-area" style="margin-top:14px;">
+                    กรุณาเลือกรูปจากเครื่อง
+                </div>
+
+                <div style="margin: 14px 0 10px; font-size: 12px; color: #64748b;">Base64 Output</div>
+                <div class="detail-value" id="local-base64-output">No local image selected</div>
+
+                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-copy" onclick="copyLocalBase64()">Copy Local Base64</button>
+                </div>
+
+                <div class="image-preview-wrap" id="local-image-preview-wrap">
+                    <div style="font-weight: 600; color: #b91c1c;">Local Image Preview</div>
+                    <div id="local-image-meta" style="margin-top: 4px; font-size: 12px; color: #334155;"></div>
+                    <img id="local-image-preview" class="image-preview" alt="Local image preview">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📄 Image Base64 Converter | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+        </div>
+    </div>
+
+    <script>
+        let latestLocalBase64 = '';
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function setLocalStatus(type, message) {
+            const status = document.getElementById('local-image-status');
+            if (type === 'success') {
+                status.style.borderLeftColor = '#16a34a';
+                status.style.backgroundColor = '#e8f5e9';
+            } else if (type === 'pending') {
+                status.style.borderLeftColor = '#f39c12';
+                status.style.backgroundColor = '#fff3e0';
+            } else {
+                status.style.borderLeftColor = '#e74c3c';
+                status.style.backgroundColor = '#ffebee';
+            }
+            status.textContent = message;
+        }
+
+        function clearLocalImagePreview(message) {
+            latestLocalBase64 = '';
+            document.getElementById('local-base64-output').textContent = message || 'No local image selected';
+            document.getElementById('local-image-meta').textContent = '';
+            document.getElementById('local-image-preview').removeAttribute('src');
+            document.getElementById('local-image-preview-wrap').classList.remove('show');
+        }
+
+        function handleLocalImageFile(event) {
+            const fileInput = event.target;
+            const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+            const maxBytes = 2 * 1024 * 1024;
+
+            if (!file) {
+                clearLocalImagePreview('No local image selected');
+                setLocalStatus('error', 'ไม่พบไฟล์รูปที่เลือก');
+                return;
+            }
+
+            if (!file.type || !file.type.startsWith('image/')) {
+                clearLocalImagePreview('No local image selected');
+                setLocalStatus('error', 'ไฟล์ที่เลือกไม่ใช่รูปภาพ');
+                return;
+            }
+
+            if (file.size > maxBytes) {
+                clearLocalImagePreview('No local image selected');
+                fileInput.value = '';
+                setLocalStatus('error', 'ไฟล์เกิน 2MB (' + formatFileSize(file.size) + ') กรุณาเลือกรูปที่เล็กกว่า');
+                return;
+            }
+
+            setLocalStatus('pending', 'กำลังแปลงรูปเป็น Base64...');
+            const reader = new FileReader();
+
+            reader.onload = function(loadEvent) {
+                const result = String(loadEvent.target && loadEvent.target.result ? loadEvent.target.result : '');
+                const commaIndex = result.indexOf(',');
+                const base64 = commaIndex >= 0 ? result.slice(commaIndex + 1) : result;
+                latestLocalBase64 = base64;
+
+                document.getElementById('local-base64-output').textContent = base64;
+                document.getElementById('local-image-preview').src = result;
+                document.getElementById('local-image-preview-wrap').classList.add('show');
+                document.getElementById('local-image-meta').textContent =
+                    'Name: ' + file.name + ' | Type: ' + file.type + ' | Size: ' + formatFileSize(file.size) + ' | Base64 length: ' + base64.length;
+                setLocalStatus('success', 'แปลงไฟล์รูปเป็น Base64 สำเร็จ');
+            };
+
+            reader.onerror = function() {
+                clearLocalImagePreview('No local image selected');
+                setLocalStatus('error', 'อ่านไฟล์ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function copyLocalBase64() {
+            if (!latestLocalBase64) {
+                alert('ยังไม่มี Base64 จากไฟล์ในเครื่อง');
+                return;
+            }
+            navigator.clipboard.writeText(latestLocalBase64);
+            alert('Copied Local Base64');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Account from Customer ID</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background-color: #2563eb;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .variable-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid #2563eb;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: #2563eb;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .variable-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .detail-value {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-left: 3px solid #2563eb;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 320px;
+            overflow: auto;
+        }
+
+        .detail-value.success-data {
+            background-color: #e8f5e9;
+            border-left-color: #16a34a;
+        }
+
+        #raw-response {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .response-area {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #ddd;
+            display: none;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .response-area.show {
+            display: block;
+        }
+
+        .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .footer {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #64748b;
+            margin: 12px 0 8px;
+        }
+
+        .step-label:first-child {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔎 Get Account from Customer ID</h1>
+            <p>กรอก Customer ID เพื่อค้นหา Account Number ทั้งหมดที่มีอยู่ในระบบ</p>
+        </header>
+
+        <div class="section" style="margin-bottom: 14px;">
+            <div class="section-content" style="padding: 12px 14px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="Main_Menu.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #0f766e; color: white;">Main Menu</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL23.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.3</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL13.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 1.3</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Thai_IAL21.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Thai Customer 2.1</button>
+                    </a>
+                    <a href="Create_Customer_SIT_Foreigner.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Foreigner Customer</button>
+                    </a>
+                    <a href="KKP_Channel_Verification.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button>
+                    </a>
+                    <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button>
+                    </a>
+                    <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Convert Image Base64</button>
+                    </a>
+                    <a href="Remove_Device_Better_App.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Remove Device</button>
+                    </a>
+                    <a href="Transfer_Money_ATS_SG.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Topup Money</button>
+                    </a>
+                    <a href="Get_Customer_Profile_By_AccountNo.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Profile by Account</button>
+                    </a>
+                    <a href="Get_Account_From_CID.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #2563eb; color: white;">Get Account from CID</button>
+                    </a>
+                    <a href="Cancel_State_For_Onboarding.html" style="text-decoration: none;">
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Cancel State</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="env-toggle-bar" class="section" style="margin-bottom: 14px; border-top: 4px solid #2563eb;">
+            <div class="section-content" style="padding: 14px 16px;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 13px; color: #2c3e50;">Environment:</span>
+                    <button id="btn-env-sit" class="btn" onclick="switchEnv('sit')" style="background-color: #2563eb; color: white; padding: 8px 20px; font-size: 13px;">SIT</button>
+                    <button id="btn-env-uat" class="btn" onclick="switchEnv('uat')" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #2563eb; padding: 8px 20px; font-size: 13px;">UAT</button>
+                    <span id="env-active-label" style="font-size: 12px; color: #7f8c8d; margin-left: 4px;">Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Request Inputs</div>
+            <div class="section-content">
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <label class="variable-name">Customer ID (CID)</label>
+                        <input type="text" class="variable-input" id="customerId" value="1101700230701" oninput="updatePreview()">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Reference No</label>
+                        <input type="text" class="variable-input" id="referenceNo" value="test1" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">cifNo from Step 1</label>
+                        <input type="text" class="variable-input" id="cifNo" value="" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">url CDF GetCustomerInfo</label>
+                        <input type="text" class="variable-input" id="urlCDFGetCustomerInfo" value="10.208.113.123" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">url ACS</label>
+                        <input type="text" class="variable-input" id="urlACS" value="acssit.kiatnakinbank.com" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                    <div class="variable-item">
+                        <label class="variable-name">Proxy Base URL</label>
+                        <input type="text" class="variable-input" id="proxyBaseUrl" value="http://localhost:3000" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title" onclick="toggleApiPreview(event)" style="cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center;">
+                <span>API Request Preview</span>
+                <span id="api-preview-toggle-icon" class="toggle-icon" style="transform: rotate(-90deg);">▼</span>
+            </div>
+            <div class="section-content">
+                <div id="api-preview-body" style="display: none;">
+                    <div class="step-label">Step 1 URL</div>
+                    <div class="detail-value" id="request-step1-url"></div>
+
+                    <div class="step-label">Step 1 Body</div>
+                    <div class="detail-value" id="request-step1-body"></div>
+
+                    <div class="step-label">Step 2 URL</div>
+                    <div class="detail-value" id="request-step2-url"></div>
+
+                    <div class="step-label">Step 2 Headers</div>
+                    <div class="detail-value" id="request-step2-headers"></div>
+
+                    <div class="step-label">Step 2 Body</div>
+                    <div class="detail-value" id="request-step2-body"></div>
+                </div>
+
+                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="searchAccountFromCID()">🚀 Send Request</button>
+                </div>
+
+                <div class="response-area" id="response-area"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Raw Response</div>
+            <div class="section-content">
+                <div class="detail-value success-data" id="raw-response">No response yet</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📄 Get Account from CID | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'getAccountFromCIDState';
+        const ENV_CONFIG = {
+            sit: {
+                urlCDFGetCustomerInfo: '10.208.113.123',
+                urlACS: 'acssit.kiatnakinbank.com'
+            },
+            uat: {
+                urlCDFGetCustomerInfo: 'cdf.kiatnakinbank.com',
+                urlACS: 'acs.kiatnakinbank.com'
+            }
+        };
+
+        let latestCifNo = '';
+
+        function normalizeProxyBaseUrl(rawValue) {
+            const value = String(rawValue || '').trim();
+            if (!value) return 'http://localhost:3000';
+            return value.replace(/\/$/, '');
+        }
+
+        function getProxyCandidates() {
+            const proxyInput = document.getElementById('proxyBaseUrl');
+            const configured = normalizeProxyBaseUrl(proxyInput ? proxyInput.value : 'http://localhost:3000');
+            const candidates = [configured];
+
+            if (configured === 'http://localhost:3000') {
+                candidates.push('http://localhost:3001', 'http://localhost:3002');
+            } else if (configured === 'http://localhost:3001') {
+                candidates.push('http://localhost:3000', 'http://localhost:3002');
+            } else if (configured === 'http://localhost:3002') {
+                candidates.push('http://localhost:3000', 'http://localhost:3001');
+            } else {
+                candidates.push('http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002');
+            }
+
+            return [...new Set(candidates)];
+        }
+
+        async function requestViaProxy(path, payload) {
+            const candidates = getProxyCandidates();
+            let lastError = null;
+            let lastResult = null;
+
+            for (const proxyBaseUrl of candidates) {
+                try {
+                    const response = await fetch(proxyBaseUrl + path, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (parseError) {
+                        data = {
+                            success: false,
+                            error: 'Invalid JSON response from proxy'
+                        };
+                    }
+
+                    const missingRoute = response.status === 404 || (data && data.error === 'Not found');
+                    if (missingRoute) {
+                        lastResult = { proxyBaseUrl, response, data };
+                        continue;
+                    }
+
+                    return { proxyBaseUrl, response, data };
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+
+            if (lastResult) return lastResult;
+            if (lastError) throw lastError;
+
+            return {
+                proxyBaseUrl: candidates[0],
+                response: null,
+                data: { success: false, error: 'Unable to reach proxy' }
+            };
+        }
+
+        function getStep1RequestUrl() {
+            return 'http://' + document.getElementById('urlCDFGetCustomerInfo').value + '/CDF_NEW/api/getCustomerInfo';
+        }
+
+        function getStep1Payload() {
+            return {
+                header: {
+                    transactionDate: new Date().toISOString(),
+                    serviceName: 'getCustomerInfo',
+                    systemCode: 'CDF',
+                    referenceNo: document.getElementById('referenceNo').value,
+                    channelID: 'CDF'
+                },
+                InputParam: {
+                    cardID: document.getElementById('customerId').value,
+                    cardType: '001',
+                    cifNo: null
+                }
+            };
+        }
+
+        function getStep2RequestUrl() {
+            return 'http://' + document.getElementById('urlACS').value + '/api/account/v2/accounts';
+        }
+
+        function getStep2Headers() {
+            return {
+                'Content-Type': 'application/json',
+                'request-id': 'test1',
+                'caller-id': 'ACS',
+                'application-channel': 'ACS'
+            };
+        }
+
+        function getStep2Payload() {
+            return {
+                Account: {
+                    IDNumber: '',
+                    IDTypeCode: '',
+                    IDIssueCountryCode: '',
+                    CustomerNumber: latestCifNo,
+                    AccountNumber: '',
+                    AccountType: '',
+                    ProductType: '',
+                    ProductCode: '',
+                    JointAccountFlag: '',
+                    ActiveFlag: 'Y'
+                }
+            };
+        }
+
+        function extractCifNo(responseBody) {
+            if (!responseBody || typeof responseBody !== 'object') return '';
+            return (responseBody.CIFInfo && responseBody.CIFInfo.cifNo)
+                || (responseBody.OutputParam && responseBody.OutputParam.CIFInfo && responseBody.OutputParam.CIFInfo.cifNo)
+                || responseBody.cifNo
+                || '';
+        }
+
+        function showResponseMessage(type, html) {
+            const responseArea = document.getElementById('response-area');
+            responseArea.classList.add('show');
+
+            if (type === 'success') {
+                responseArea.style.borderLeftColor = '#16a34a';
+                responseArea.style.backgroundColor = '#e8f5e9';
+            } else if (type === 'pending') {
+                responseArea.style.borderLeftColor = '#f39c12';
+                responseArea.style.backgroundColor = '#fff3e0';
+            } else {
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+            }
+
+            responseArea.innerHTML = html;
+        }
+
+        function updatePreview() {
+            document.getElementById('request-step1-url').textContent = getStep1RequestUrl();
+            document.getElementById('request-step1-body').textContent = JSON.stringify(getStep1Payload(), null, 2);
+            document.getElementById('request-step2-url').textContent = getStep2RequestUrl();
+            document.getElementById('request-step2-headers').textContent = JSON.stringify(getStep2Headers(), null, 2);
+            document.getElementById('request-step2-body').textContent = JSON.stringify(getStep2Payload(), null, 2);
+            document.getElementById('cifNo').value = latestCifNo;
+            saveState();
+        }
+
+        function toggleApiPreview(event) {
+            event.stopPropagation();
+            const body = document.getElementById('api-preview-body');
+            const icon = document.getElementById('api-preview-toggle-icon');
+            const collapsed = body.style.display === 'none';
+            body.style.display = collapsed ? 'block' : 'none';
+            icon.style.transform = collapsed ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+
+        function updateEnvToggleUI(env) {
+            const sitBtn = document.getElementById('btn-env-sit');
+            const uatBtn = document.getElementById('btn-env-uat');
+            const label = document.getElementById('env-active-label');
+
+            if (env === 'sit') {
+                sitBtn.style.backgroundColor = '#2563eb';
+                sitBtn.style.color = 'white';
+                sitBtn.style.border = 'none';
+                uatBtn.style.backgroundColor = '#ecf0ff';
+                uatBtn.style.color = '#2c3e50';
+                uatBtn.style.border = '1px solid #2563eb';
+                label.textContent = 'Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]';
+            } else {
+                uatBtn.style.backgroundColor = '#0ea5a4';
+                uatBtn.style.color = 'white';
+                uatBtn.style.border = 'none';
+                sitBtn.style.backgroundColor = '#ecf0ff';
+                sitBtn.style.color = '#2c3e50';
+                sitBtn.style.border = '1px solid #0ea5a4';
+                label.textContent = 'Current: UAT [ตอนนี้ท่านเลือกเป็น UAT env.]';
+            }
+        }
+
+        function detectCurrentEnv() {
+            const endpoint = (document.getElementById('urlACS') || {}).value || '';
+            return endpoint.trim().toLowerCase() === ENV_CONFIG.sit.urlACS ? 'sit' : 'uat';
+        }
+
+        function switchEnv(env) {
+            const cfg = ENV_CONFIG[env];
+            if (!cfg) return;
+            document.getElementById('urlCDFGetCustomerInfo').value = cfg.urlCDFGetCustomerInfo;
+            document.getElementById('urlACS').value = cfg.urlACS;
+            updateEnvToggleUI(env);
+            updatePreview();
+        }
+
+        async function searchAccountFromCID() {
+            const customerId = String(document.getElementById('customerId').value || '').trim();
+            if (!customerId) {
+                showResponseMessage('error', '<div><strong>Error</strong></div><div style="margin-top:4px;">กรุณากรอก Customer ID (CID)</div>');
+                return;
+            }
+
+            latestCifNo = '';
+            updatePreview();
+
+            showResponseMessage('pending', '<div><strong>Running Step 1 + Step 2...</strong></div><div style="margin-top:4px;">Step 1: ' + getStep1RequestUrl() + '</div>');
+
+            try {
+                const step1Result = await requestViaProxy('/api/proxy', {
+                    url: getStep1RequestUrl(),
+                    payload: getStep1Payload(),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const step1Data = step1Result.data || {};
+                if (!step1Data.success) {
+                    document.getElementById('raw-response').textContent = JSON.stringify(step1Data, null, 2);
+                    showResponseMessage('error', '<div><strong>Step 1 Error</strong></div><div style="margin-top:4px;">Proxy: ' + step1Result.proxyBaseUrl + '</div><div style="margin-top:4px;">' + (step1Data.error || 'Unknown error') + '</div>');
+                    return;
+                }
+
+                const step1Body = step1Data.body || {};
+                const cifNo = extractCifNo(step1Body);
+                if (!cifNo) {
+                    document.getElementById('raw-response').textContent = JSON.stringify(step1Data, null, 2);
+                    showResponseMessage('error', '<div><strong>Step 1 Success แต่ไม่พบ cifNo</strong></div><div style="margin-top:4px;">ตรวจสอบ response ของ getCustomerInfo</div>');
+                    return;
+                }
+
+                latestCifNo = String(cifNo);
+                updatePreview();
+
+                const step2Result = await requestViaProxy('/api/proxy', {
+                    url: getStep2RequestUrl(),
+                    payload: getStep2Payload(),
+                    headers: getStep2Headers()
+                });
+
+                const step2Data = step2Result.data || {};
+                document.getElementById('raw-response').textContent = JSON.stringify(step2Data, null, 2);
+
+                if (!step2Data.success) {
+                    showResponseMessage('error', '<div><strong>Step 2 Error</strong></div><div style="margin-top:4px;">Proxy: ' + step2Result.proxyBaseUrl + '</div><div style="margin-top:4px;">' + (step2Data.error || 'Unknown error') + '</div>');
+                    return;
+                }
+
+                const responseBody = step2Data.body || {};
+                const accountCount = Array.isArray(responseBody.AccountList)
+                    ? responseBody.AccountList.length
+                    : (Array.isArray(responseBody.accounts) ? responseBody.accounts.length : null);
+
+                let accountMessage = 'พบข้อมูลแล้ว';
+                if (accountCount !== null) {
+                    accountMessage = 'พบข้อมูลบัญชี ' + accountCount + ' รายการ';
+                }
+
+                showResponseMessage(
+                    'success',
+                    '<div><strong>Success</strong></div>'
+                    + '<div style="margin-top:4px;">Step 1 Proxy: ' + step1Result.proxyBaseUrl + '</div>'
+                    + '<div style="margin-top:4px;">Step 2 Proxy: ' + step2Result.proxyBaseUrl + '</div>'
+                    + '<div style="margin-top:4px;">cifNo: ' + latestCifNo + '</div>'
+                    + '<div style="margin-top:4px;">' + accountMessage + '</div>'
+                );
+            } catch (error) {
+                showResponseMessage('error', '<div><strong>Error</strong></div><div style="margin-top:4px;">' + error.message + '</div><div style="margin-top:8px; font-size:11px;">ตรวจสอบว่า proxy-server.js กำลังทำงาน (3000/3001/3002)</div>');
+            }
+        }
+
+        function saveState() {
+            const state = {
+                customerId: document.getElementById('customerId').value,
+                referenceNo: document.getElementById('referenceNo').value,
+                urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
+                urlACS: document.getElementById('urlACS').value
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function loadState() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            try {
+                const state = JSON.parse(raw);
+                if (state.customerId) document.getElementById('customerId').value = state.customerId;
+                if (state.referenceNo) document.getElementById('referenceNo').value = state.referenceNo;
+                if (state.urlCDFGetCustomerInfo) document.getElementById('urlCDFGetCustomerInfo').value = state.urlCDFGetCustomerInfo;
+                if (state.urlACS) document.getElementById('urlACS').value = state.urlACS;
+            } catch (err) {
+                console.warn('Failed to load state', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            updateEnvToggleUI(detectCurrentEnv());
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
