@@ -330,7 +330,7 @@
                         <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">KKP Channel Verification</button>
                     </a>
                     <a href="Get_Customer_Image_Viewer.html" style="text-decoration: none;">
-                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Image Viewer</button>
+                        <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Get Customer Image</button>
                     </a>
                     <a href="Local_Image_Base64_Converter.html" style="text-decoration: none;">
                         <button class="btn" style="background-color: #ecf0ff; color: #2c3e50; border: 1px solid #667eea;">Convert Image Base64</button>
@@ -1165,7 +1165,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 uatBtn.style.backgroundColor = '#ecf0ff';
                 uatBtn.style.color = '#2c3e50';
                 uatBtn.style.border = '1px solid #3498db';
-                if (label) label.textContent = 'Current: SIT';
+                if (label) label.textContent = 'Current: SIT [ตอนนี้ท่านเลือกเป็น SIT env.]';
             } else {
                 uatBtn.style.backgroundColor = '#27ae60';
                 uatBtn.style.color = 'white';
@@ -1173,7 +1173,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 sitBtn.style.backgroundColor = '#ecf0ff';
                 sitBtn.style.color = '#2c3e50';
                 sitBtn.style.border = '1px solid #27ae60';
-                if (label) label.textContent = 'Current: UAT';
+                if (label) label.textContent = 'Current: UAT [ตอนนี้ท่านเลือกเป็น UAT env.]';
             }
         }
 
