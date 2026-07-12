@@ -173,21 +173,22 @@
             </div>
         </div>
 
-        <div class="section setup-section" style="border-top: 3px solid #ffc107;">
-            <h2 class="setup-header" onclick="toggleSetup(event)" style="color: #b45309; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;">
-                <span>⚙️ Setup Required - โปรดอ่านให้ครบ ก่อนใช้งานเว็บ</span>
+        <div class="section setup-section" style="border-top: 5px solid #ffda07;">
+            <h2 class="setup-header" onclick="toggleSetup(event)" style="color: #d58c06; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;">
+                <span>⚙️ Setup Required - โปรดอ่านให้เข้าใจ ก่อนใช้งานเว็บ</span>
                 <span class="setup-toggle-icon" style="font-size: 18px; transition: transform 0.3s; transform: rotate(0deg);">▼</span>
             </h2>
             <div class="setup-body" style="margin-top: 12px; display: block;">
-                <p style="margin-bottom: 12px; color: #b45309"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
+                <p style="margin-bottom: 12px; color: #0c308b"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
                 <ol style="margin-left: 20px; margin-top: 8px; color: #334155;">
+                    <li style="margin-bottom: 12px;"><strong>ติดต่อขอรับไฟล์ proxy-server.js</strong> ได้ที่ Surachet Jurakurd (Champ) 🤓</li>
                     <li style="margin-bottom: 12px;"><strong>เปิด Terminal บน OS Mac หรือ CMD บน Windows </strong></li>
-                    <li style="margin-bottom: 12px; color: #9c0505"><strong>เปลี่ยนไปยังโฟลเดอร์ที่มี proxy-server.js</strong> (เช่น cd ./Documents/Download/WebCreateForeigner) หากเป็น Mac OS สามารถคลิกขวาแล้วเลือก New Terminal at Folder</li>
+                    <li style="margin-bottom: 12px; color: #b00e08"><strong>เปลี่ยนไปยังโฟลเดอร์ที่มี proxy-server.js</strong> (เช่น cd ./Documents/Download/WebCreateForeigner) หากเครื่องของผู้ใช้เป็น MAC OS สามารถคลิกขวาแล้วเลือก >> New Terminal at Folder <<</li>
                     <li style="margin-bottom: 12px;"><strong>รันคำสั่ง proxy server:</strong>
                         <div style="background-color: #f8fafc; border-left: 3px solid #ffc107; padding: 10px 15px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; margin-top: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px;" onclick="copyCommand('node proxy-server.js', this)" title="คลิกเพื่อคัดลอก"><span class="cmd-text">node proxy-server.js</span><span style="font-size: 11px; color: #b45309; white-space: nowrap;">📋 Copy</span></div>
                     </li>
-                    <li style="margin-bottom: 12px;"><strong>รอจนเห็น:</strong> ✅ Proxy server running at http://localhost:3000 อันเป็นใช้ได้ และห้ามปิด Terminal หรือ CMD ขณะใช้งานเว็บ</li>
-                    <li style="margin-bottom: 12px;"><strong>ติดต่อขอรับไฟล์ proxy-server.js</strong> ได้ที่ Surachet Jurakurd (Champ) 🤓</li>
+                    <li style="margin-bottom: 12px;"><strong>รอจนเห็น:</strong> ✅ Proxy server running at http://localhost:3000 อันเป็นใช้ได้ <strong>ห้าม Kill Process ใน Terminal หรือ CMD ขณะใช้งานเว็บ</strong></li>
+                    <li style="margin-bottom: 12px;">เนื่องจากเว็บนี้มี Process Backend จะต้องทำการ Connect VPN DEV และต้องรัน proxy server ไว้ตลอดการใช้งาน</li>
                 </ol>
             </div>
         </div>
