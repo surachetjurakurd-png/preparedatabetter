@@ -72,6 +72,14 @@
             background-color: #047857;
         }
 
+        .section-title.locked {
+            cursor: default;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .toggle-icon {
             font-size: 20px;
             transition: transform 0.3s;
@@ -254,7 +262,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title collapsible collapsed" onclick="toggleSection(event)"><span>Request Input</span><span class="toggle-icon">▼</span></div>
+            <div class="section-title locked collapsed" aria-disabled="true"><span>Request Input</span><span class="toggle-icon">▼</span></div>
             <div class="section-content collapsed">
                 <div class="variables-grid">
                     <div class="variable-item">
@@ -290,7 +298,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title collapsible collapsed" onclick="toggleSection(event)"><span>cURL Preview</span><span class="toggle-icon">▼</span></div>
+            <div class="section-title locked collapsed" aria-disabled="true"><span>cURL Preview</span><span class="toggle-icon">▼</span></div>
             <div class="section-content collapsed">
                 <div style="font-size:12px; color:#64748b; margin-bottom:8px;">Step 1: Transfer Lookup</div>
                 <div class="detail-value" id="curl-lookup-preview"></div>
@@ -317,7 +325,7 @@
             </div>
         </div>
 
-        <div class="footer">📄 Transfer Money ATS SG | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</div>
+        <div class="footer">📄 Transfer Money ATS SG | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</div>
     </div>
 
     <script>

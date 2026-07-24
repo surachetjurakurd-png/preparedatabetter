@@ -72,6 +72,14 @@
             background-color: #dc2626;
         }
 
+        .section-title.locked {
+            cursor: default;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .toggle-icon {
             font-size: 20px;
             transition: transform 0.3s;
@@ -239,7 +247,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title collapsible collapsed" onclick="toggleSection(event)"><span>Request Input</span><span class="toggle-icon">▼</span></div>
+            <div class="section-title locked collapsed" aria-disabled="true"><span>Request Input</span><span class="toggle-icon">▼</span></div>
             <div class="section-content collapsed">
                 <div class="variables-grid">
                     <div class="variable-item">
@@ -254,11 +262,11 @@
                         </div>
                     </div>
                     <div class="variable-item">
-                        <label class="variable-name">Endpoint (Step 1: Get customer info)</label>
+                        <label class="variable-name">Endpoint (Step 1 : Get customer info)</label>
                         <input type="text" class="variable-input" id="endpointGetCustomerInfo" value="http://10.208.113.123/CDF_NEW/api/getCustomerInfo" readonly style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
                     </div>
                     <div class="variable-item">
-                        <label class="variable-name">Endpoint (Step 2: Remove all device list)</label>
+                        <label class="variable-name">Endpoint (Step 2 : Remove all device list)</label>
                         <input type="text" class="variable-input" id="endpointRemove" value="http://ribs.kiatnakinbank.com/device-management-service/api-internal/v1/remove-all-device-list-by-cis-id" readonly style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
                     </div>
                 </div>
@@ -266,11 +274,11 @@
         </div>
 
         <div class="section">
-            <div class="section-title collapsible collapsed" onclick="toggleSection(event)"><span>cURL Preview</span><span class="toggle-icon">▼</span></div>
+            <div class="section-title locked collapsed" aria-disabled="true"><span>cURL Preview</span><span class="toggle-icon">▼</span></div>
             <div class="section-content collapsed">
-                <div style="font-size:12px; color:#64748b; margin-bottom:8px;">Step 1: Get customer info</div>
+                <div style="font-size:12px; color:#64748b; margin-bottom:8px;">Step 1 : Get customer info</div>
                 <div class="detail-value" id="curl-step1-preview"></div>
-                <div style="font-size:12px; color:#64748b; margin:14px 0 8px;">Step 2: Remove all device list</div>
+                <div style="font-size:12px; color:#64748b; margin:14px 0 8px;">Step 2 : Remove all device list</div>
                 <div class="detail-value" id="curl-remove-preview"></div>
             </div>
         </div>
@@ -279,8 +287,8 @@
             <div class="section-title">API Steps</div>
             <div class="section-content">
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="getCustomerInfoStep1()">Step 1: Get Customer Info</button>
-                    <button class="btn btn-danger" onclick="removeAllDeviceList()">Step 2: Remove All Device List</button>
+                    <button class="btn btn-primary" onclick="getCustomerInfoStep1()">Step 1 : Get Customer Info</button>
+                    <button class="btn btn-danger" onclick="removeAllDeviceList()">Step 2 : Remove All Device List</button>
                 </div>
                 <div id="response-area" class="response-area"></div>
             </div>
@@ -293,7 +301,7 @@
             </div>
         </div>
 
-        <div class="footer">📄 Remove Device Better App | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</div>
+        <div class="footer">📄 Remove Device Better App | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</div>
     </div>
 
     <script>

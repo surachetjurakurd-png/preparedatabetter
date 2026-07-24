@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cancel State For Onboarding</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛑%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%97%3C/text%3E%3C/svg%3E">
     <style>
         * {
             margin: 0;
@@ -70,6 +70,14 @@
 
         .section-title.collapsible:hover {
             background-color: #b91c1c;
+        }
+
+        .section-title.locked {
+            cursor: default;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .toggle-icon {
@@ -306,7 +314,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title collapsible collapsed" onclick="toggleSection(event)">
+            <div class="section-title locked collapsed" aria-disabled="true">
                 <span>SQL Query Preview</span><span class="toggle-icon">▼</span>
             </div>
             <div class="section-content collapsed">
@@ -332,7 +340,7 @@
             </div>
         </div>
 
-        <div class="footer">📂 WEB Create Customer | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</div>
+        <div class="footer">📂 WEB Create Customer | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</div>
     </div>
 
     <script>

@@ -69,6 +69,29 @@
             background-color: #0f8a6a;
         }
 
+        .section-title.locked {
+            cursor: default;
+        }
+
+        .section-title.locked:hover {
+            background-color: #0b6e99;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            line-height: 1;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            transform: rotate(0deg);
+            transform-origin: center;
+            transition: transform 0.25s ease;
+        }
+
+        .section-title:not(.collapsed) .toggle-icon {
+            transform: rotate(90deg);
+        }
+
         .section-content {
             padding: 20px;
             max-height: none;
@@ -173,6 +196,10 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
+        }
+
+        .step.expanded .step-header .toggle-icon {
+            transform: rotate(90deg);
         }
 
         .step.expanded .step-details {
@@ -360,7 +387,7 @@
         <div class="section" style="border-top: 3px solid #ffc107;">
             <div class="section-title collapsed" onclick="toggleSection(event)" style="background-color: #f39c12;">
                 <span>⚙️ Setup Required - โปรดอ่านให้ครบ</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content collapsed">
                 <p style="margin-bottom: 12px;"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
@@ -378,7 +405,7 @@
         <div class="section">
             <div class="section-title" onclick="toggleSection(event)">
                 <span>👤 Customer Data</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
                 <div class="variables-grid">
@@ -395,9 +422,9 @@
         </div>
 
         <div class="section">
-            <div class="section-title collapsed" onclick="toggleSection(event)">
+            <div class="section-title collapsed locked" aria-disabled="true">
                 <span>⚙️ Environment Configuration</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <span class="toggle-icon" style="font-size: 16px; padding: 0 8px; color: white;">▶</span>
             </div>
             <div class="section-content collapsed">
                 <div class="variables-grid">
@@ -485,14 +512,14 @@ order by os.create_date desc;</textarea>
         <div class="section">
             <div class="section-title" onclick="toggleSection(event)">
                 <span>🔄 KKP Verification Steps</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
                 <div class="step" onclick="toggleStep(event)">
                     <div class="step-header">
                         <span class="step-number">1</span>
                         <span class="step-title">Query request RP Enroll and Verify Referral Code (DB)</span>
-                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                        <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▶</button>
                     </div>
                     <div class="step-details" onclick="event.stopPropagation()">
                         <div class="detail-row">
@@ -510,7 +537,7 @@ order by os.create_date desc;</textarea>
                     <div class="step-header">
                         <span class="step-number">2</span>
                         <span class="step-title">Call API Accept Request RP KKP</span>
-                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                        <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▶</button>
                     </div>
                     <div class="step-details" onclick="event.stopPropagation()">
                         <div class="detail-row">
@@ -534,7 +561,7 @@ POST http://{{urlKKPIdpAgent}}/MockDipchip
         </div>
 
         <div class="footer">
-            <p>📄 KKP Channel Verification | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+            <p>📄 KKP Channel Verification | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</p>
         </div>
     </div>
 

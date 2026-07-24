@@ -55,8 +55,22 @@
             font-weight: 600;
         }
 
+        .section-title.locked {
+            cursor: default;
+        }
+
+        .section-title.locked:hover {
+            background-color: #2563eb;
+        }
+
         .section-content {
             padding: 20px;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
         }
 
         .variables-grid {
@@ -239,10 +253,21 @@
             <div class="section-title">Request Inputs</div>
             <div class="section-content">
                 <div class="variables-grid">
-                    <div class="variable-item">
+                    <div class="variable-item" style="max-width: 420px; justify-self: start;">
                         <label class="variable-name">Thai Citizen ID</label>
                         <input type="text" class="variable-input" id="identityID" value="1101700234561" oninput="updatePreview()">
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title locked" aria-disabled="true" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>⚙️ Environment Configuration</span>
+                <span style="font-size: 16px; padding: 0 8px; color: white;">▶</span>
+            </div>
+            <div class="section-content collapsed">
+                <div class="variables-grid">
                     <div class="variable-item">
                         <label class="variable-name">Reference No</label>
                         <input type="text" class="variable-input" id="referenceNo" value="IBN20230301135428137" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
@@ -287,7 +312,7 @@
         </div>
 
         <div class="footer">
-            <p>📄 Get Customer Image Viewer | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+            <p>📄 Get Customer Image Viewer | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</p>
         </div>
     </div>
 

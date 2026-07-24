@@ -55,8 +55,38 @@
             font-weight: 600;
         }
 
+        .section-title.collapsible {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title.collapsible:hover {
+            background-color: #1d4ed8;
+        }
+
+        .section-title.locked {
+            cursor: default;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title.locked:hover {
+            background-color: #2563eb;
+        }
+
         .section-content {
             padding: 20px;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
         }
 
         .variables-grid {
@@ -143,7 +173,17 @@
 
         .toggle-icon {
             font-size: 18px;
-            transition: transform 0.3s;
+            line-height: 1;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            transform: rotate(0deg);
+            transform-origin: center;
+            transition: transform 0.25s ease;
+        }
+
+        .section-title.collapsible:not(.collapsed) .toggle-icon {
+            transform: rotate(90deg);
         }
 
         .footer {
@@ -235,10 +275,21 @@
             <div class="section-title">Request Inputs</div>
             <div class="section-content">
                 <div class="variables-grid">
-                    <div class="variable-item">
+                    <div class="variable-item" style="max-width: 420px; justify-self: start;">
                         <label class="variable-name">Customer ID (CID)</label>
                         <input type="text" class="variable-input" id="customerId" value="1101700230701" oninput="updatePreview()">
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title locked collapsed" aria-disabled="true">
+                <span>⚙️ Environment Configuration</span>
+                <span class="toggle-icon">▶</span>
+            </div>
+            <div class="section-content collapsed">
+                <div class="variables-grid">
                     <div class="variable-item">
                         <label class="variable-name">Reference No</label>
                         <input type="text" class="variable-input" id="referenceNo" value="test1" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
@@ -264,9 +315,9 @@
         </div>
 
         <div class="section">
-            <div class="section-title" onclick="toggleApiPreview(event)" style="cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center;">
+            <div class="section-title collapsible collapsed" onclick="toggleApiPreview(event)">
                 <span>API Request Preview</span>
-                <span id="api-preview-toggle-icon" class="toggle-icon" style="transform: rotate(-90deg);">▼</span>
+                <span id="api-preview-toggle-icon" class="toggle-icon">▶</span>
             </div>
             <div class="section-content">
                 <div id="api-preview-body" style="display: none;">
@@ -297,12 +348,12 @@
         <div class="section">
             <div class="section-title">Raw Response</div>
             <div class="section-content">
-                <div class="detail-value success-data" id="raw-response">No response yet</div>
+                <div class="detail-value" id="raw-response">No response yet</div>
             </div>
         </div>
 
         <div class="footer">
-            <p>📄 Get Account from CID | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+            <p>📄 Get Account from CID | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</p>
         </div>
     </div>
 
@@ -479,11 +530,11 @@
 
         function toggleApiPreview(event) {
             event.stopPropagation();
+            const title = event.currentTarget;
             const body = document.getElementById('api-preview-body');
-            const icon = document.getElementById('api-preview-toggle-icon');
             const collapsed = body.style.display === 'none';
             body.style.display = collapsed ? 'block' : 'none';
-            icon.style.transform = collapsed ? 'rotate(0deg)' : 'rotate(-90deg)';
+            title.classList.toggle('collapsed', !collapsed);
         }
 
         function updateEnvToggleUI(env) {

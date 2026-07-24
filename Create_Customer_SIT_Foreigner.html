@@ -97,14 +97,28 @@
         .section-title:hover {
             background-color: #764ba2;
         }
+
+        .section-title.locked {
+            cursor: default;
+        }
+
+        .section-title.locked:hover {
+            background-color: #667eea;
+        }
         
         .toggle-icon {
             font-size: 20px;
-            transition: transform 0.3s;
+            line-height: 1;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            transform: rotate(0deg);
+            transform-origin: center;
+            transition: transform 0.25s ease;
         }
         
-        .section-title.collapsed .toggle-icon {
-            transform: rotate(-90deg);
+        .section-title:not(.collapsed) .toggle-icon {
+            transform: rotate(90deg);
         }
         
         .section-content {
@@ -259,15 +273,8 @@
             color: #333;
         }
         
-        .step-toggle {
-            font-size: 18px;
-            color: #999;
-            margin-left: 10px;
-            transition: transform 0.3s;
-        }
-        
-        .step.expanded .step-toggle {
-            transform: rotate(180deg);
+        .step.expanded .step-header .toggle-icon {
+            transform: rotate(90deg);
         }
         
         .step-details {
@@ -462,7 +469,7 @@
         <div class="section" style="border-top: 3px solid #ffc107;">
             <div class="section-title collapsed" onclick="toggleSection(event)" style="background-color: #f39c12;">
                 <span>⚙️ Setup Required - โปรดอ่านให้ครบ</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content collapsed">
                 <p style="margin-bottom: 12px;"><strong>📋 ขั้นตอนการตั้งค่า:</strong></p>
@@ -485,7 +492,7 @@ node proxy-server.js
         <div class="section">
             <div class="section-title" onclick="toggleSection(event)">
                 <span>👽 Customer Data</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
                 <div class="variables-grid">
@@ -541,9 +548,9 @@ node proxy-server.js
         
         <!-- Environment Configuration Section -->
         <div class="section">
-            <div class="section-title collapsed" onclick="toggleSection(event)">
+            <div class="section-title collapsed locked" aria-disabled="true">
                 <span>⚙️ Environment Configuration</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <span class="toggle-icon" style="font-size: 16px; padding: 0 8px; color: white;">▶</span>
             </div>
             <div class="section-content collapsed">
                 <div style="background-color: #eef7ff; border-left: 4px solid #3498db; border-radius: 6px; padding: 12px; margin-bottom: 14px; color: #1f2d3d;">
@@ -583,7 +590,7 @@ node proxy-server.js
         <div class="section">
             <div class="section-title" onclick="toggleSection(event)">
                 <span>🔄 API Steps & Requests</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
                 <!-- Step 1 -->
@@ -591,7 +598,7 @@ node proxy-server.js
                     <div class="step-header">
                         <span class="step-number">1</span>
                         <span class="step-title">Create Customer: Foreigner</span>
-                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                        <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▶</button>
                     </div>
                     <div class="step-details" onclick="event.stopPropagation()">
                         <div class="detail-row">
@@ -617,7 +624,7 @@ POST http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding
                     <div class="step-header">
                         <span class="step-number">2</span>
                         <span class="step-title">GET Customer Info FullAll</span>
-                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                        <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▶</button>
                     </div>
                     <div class="step-details" onclick="event.stopPropagation()">
                         <div class="detail-row">
@@ -643,7 +650,7 @@ POST http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfoFullAll
                     <div class="step-header">
                         <span class="step-number">3</span>
                         <span class="step-title">GET Customer Image</span>
-                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                        <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▶</button>
                     </div>
                     <div class="step-details" onclick="event.stopPropagation()">
                         <div class="detail-row">
@@ -669,7 +676,7 @@ POST http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerImage
                     <div class="step-header">
                         <span class="step-number">4</span>
                         <span class="step-title">Overwrite Customer Image</span>
-                        <button class="toggle-btn" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▼</button>
+                        <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 8px; margin-left: auto;">▶</button>
                     </div>
                     <div class="step-details" onclick="event.stopPropagation()">
                         <div class="detail-row">
@@ -696,7 +703,7 @@ POST http://{{urlCDFCreateCustomer}}/CDF_NEW/api/AddCustomerImage
         <div class="section">
             <div class="section-title" onclick="toggleSection(event)">
                 <span>🌐 CDF Web Portals</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
                 <div style="background-color: #eef7ff; border-left: 4px solid #3498db; border-radius: 6px; padding: 14px; margin-top: 10px; color: #1f2d3d;">
@@ -730,7 +737,7 @@ UAT:
         <div class="section">
             <div class="section-title" onclick="toggleSection(event)">
                 <span>📱 SMS Message Gateway</span>
-                <button class="toggle-btn" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▼</button>
+                <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
@@ -749,7 +756,7 @@ UAT:
         </div>
         
         <div class="footer">
-            <p>📄 Create Foreigner from API service | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.5</p>
+            <p>📄 Create Foreigner from API service | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</p>
         </div>
     </div>
     
