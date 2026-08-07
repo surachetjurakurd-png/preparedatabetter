@@ -289,6 +289,15 @@
             font-size: 12px;
         }
 
+        .btn-send-all {
+            background-color: #16a34a;
+            color: white;
+            margin-top: 12px;
+            width: auto;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
         .response-area {
             margin-top: 12px;
             padding: 12px;
@@ -450,6 +459,10 @@
                         <input type="text" class="variable-input" id="lIALLevel" value="2.1" disabled style="background-color: #f0f0f0; cursor: not-allowed; color: #666;">
                     </div>
                     <div class="variable-item">
+                        <label class="variable-name">MyPin (6 digits)</label>
+                        <input type="text" class="variable-input" id="myPin" value="112233" maxlength="6" inputmode="numeric" pattern="[0-9]*" oninput="sanitizeMyPinInput(event); updateVariables()" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
                         <label class="variable-name">Date of Birth</label>
                         <input type="text" class="variable-input" id="dateOfBirth" value="1992-06-04T00:00:00+07:00" onchange="updateVariables()" onkeyup="updateVariables()">
                     </div>
@@ -559,6 +572,11 @@
                 <button class="toggle-btn toggle-icon" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 8px;">▶</button>
             </div>
             <div class="section-content">
+                <div style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <button class="btn btn-send-all" onclick="sendAllRequests(event)">🚀 Send all requests (customer with a PIN)</button>
+                    <button class="btn btn-send-all" style="background-color: #f59e0b;" onclick="sendAllRequestsNoStep3(event)">🚀 Send all requests (customer without a PIN)</button>
+                </div>
+                <div class="response-area" onclick="event.stopPropagation()" id="response-step-all" style="margin-top: 0; margin-bottom: 12px;"></div>
                 <div class="step" onclick="toggleStep(event)">
                     <div class="step-header">
                         <span class="step-number">1</span>
@@ -655,7 +673,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
         </div>
 
         <div class="footer">
-            <p>📄 Create Thai Customer IAL 2.1 | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</p>
+            <p>📄 Create Thai Customer IAL 2.1 | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.7</p>
         </div>
     </div>
 
@@ -669,6 +687,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             mobileNo: '0964425903',
             email: 'KKMailuser1@kkptest.onmicrosoft.com',
             lIALLevel: '2.1',
+            myPin: '112233',
             dateOfBirth: '1992-06-04T00:00:00+07:00',
             image1: '', // Removed from form
             urlCDFCreateCustomer: '10.208.113.123',
@@ -920,7 +939,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             },
             step3: {
                 "cisID": "{{cifNoFromGetCif}}",
-                "myPin": "112233",
+                "myPin": "{{myPin}}",
                 "isForceChange": false,
                 "clientIp": "171.241.83.49"
             },
@@ -990,6 +1009,18 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             return new Date().toISOString();
         }
 
+        function sanitizeMyPinInput(event) {
+            const target = event && event.target ? event.target : document.getElementById('myPin');
+            if (!target) {
+                return;
+            }
+
+            const sanitized = target.value.replace(/\D+/g, '').slice(0, 6);
+            if (sanitized !== target.value) {
+                target.value = sanitized;
+            }
+        }
+
         function toggleSection(event) {
             event.stopPropagation();
             const title = event.currentTarget;
@@ -1020,6 +1051,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             if (dbInsertUpdateUserElement) {
                 dbInsertUpdateUserElement.value = cifNoFromStep2;
             }
+            const myPinElement = document.getElementById('myPin');
 
             const variables = {
                 identityID: document.getElementById('identityID').value,
@@ -1030,6 +1062,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 mobileNo: document.getElementById('mobileNo').value,
                 email: document.getElementById('email').value,
                 lIALLevel: document.getElementById('lIALLevel').value,
+                myPin: myPinElement ? myPinElement.value.replace(/\D+/g, '').slice(0, 6) : '',
                 dateOfBirth: document.getElementById('dateOfBirth').value,
                 image1: '', // image1 field has been removed
                 urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
@@ -1048,6 +1081,10 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 dbInsertUpdateUser: document.getElementById('dbInsertUpdateUser').value,
                 transactionDate: getLocalIso8601()
             };
+
+            if (myPinElement && myPinElement.value !== variables.myPin) {
+                myPinElement.value = variables.myPin;
+            }
 
             localStorage.setItem('apiVariablesThaiIAL21', JSON.stringify(variables));
 
@@ -1069,6 +1106,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                     .replace(/{{mobileNo}}/g, variables.mobileNo)
                     .replace(/{{email}}/g, variables.email)
                     .replace(/{{lIALLevel}}/g, variables.lIALLevel)
+                    .replace(/{{myPin}}/g, variables.myPin)
                     .replace(/{{dateOfBirth}}/g, variables.dateOfBirth)
                     .replace(/{{image1}}/g, variables.image1)
                     .replace(/{{cifNoFromGetCif}}/g, latestGetCifData.cifNo || '')
@@ -1375,6 +1413,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             event.stopPropagation();
             const btn = event.target;
             const responseArea = document.getElementById('response-' + stepId);
+            let isSuccess = false;
 
             const variables = {
                 identityID: document.getElementById('identityID').value,
@@ -1385,6 +1424,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 mobileNo: document.getElementById('mobileNo').value,
                 email: document.getElementById('email').value,
                 lIALLevel: document.getElementById('lIALLevel').value,
+                myPin: document.getElementById('myPin').value.replace(/\D+/g, '').slice(0, 6),
                 dateOfBirth: document.getElementById('dateOfBirth').value,
                 image1: '', // image1 field has been removed
                 urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
@@ -1405,7 +1445,15 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 responseArea.style.borderLeftColor = '#e74c3c';
                 responseArea.style.backgroundColor = '#ffebee';
                 responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>โปรดรัน Step 2 (Get Customer Info) ก่อน เพื่อดึง CIF, mobile และ email</div>';
-                return;
+                return false;
+            }
+
+            if (stepId === 'step3' && variables.myPin.length !== 6) {
+                responseArea.classList.add('show');
+                responseArea.style.borderLeftColor = '#e74c3c';
+                responseArea.style.backgroundColor = '#ffebee';
+                responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>กรุณากรอก MyPin ให้ครบ 6 หลักก่อนส่ง Step 3</div>';
+                return false;
             }
 
             const selectedBody = requestBodies[stepId] || requestBodies.step1;
@@ -1420,6 +1468,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 .replace(/{{mobileNo}}/g, variables.mobileNo)
                 .replace(/{{email}}/g, variables.email)
                 .replace(/{{lIALLevel}}/g, variables.lIALLevel)
+                .replace(/{{myPin}}/g, variables.myPin)
                 .replace(/{{dateOfBirth}}/g, variables.dateOfBirth)
                 .replace(/{{image1}}/g, variables.image1)
                 .replace(/{{cifNoFromGetCif}}/g, latestGetCifData.cifNo || '')
@@ -1453,6 +1502,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 });
                 const data = proxyResult.data;
                 if (data.success) {
+                    isSuccess = true;
                     if (stepId === 'step2') {
                         const cifInfo = (data.body && data.body.CIFInfo)
                             || (data.body && data.body.OutputParam && data.body.OutputParam.CIFInfo)
@@ -1484,6 +1534,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             }
 
             btn.disabled = false;
+            return isSuccess;
         }
 
         async function insertCustomerInfo(event) {
@@ -1491,6 +1542,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             event.stopPropagation();
             const btn = event.target;
             const responseArea = document.getElementById('response-step4');
+            let isSuccess = false;
 
             const dbEnv = document.getElementById('dbEnv').value;
             const dbHost = document.getElementById('dbHost').value.trim();
@@ -1507,7 +1559,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 responseArea.style.borderLeftColor = '#e74c3c';
                 responseArea.style.backgroundColor = '#ffebee';
                 responseArea.innerHTML = '<div class="response-header">❌ Error</div><div>กรอกข้อมูล DB และค่า Insert ให้ครบก่อน</div>';
-                return;
+                return false;
             }
 
             btn.disabled = true;
@@ -1539,6 +1591,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
                 const proxyBaseUrl = proxyResult.proxyBaseUrl;
 
                 if (data.success) {
+                    isSuccess = true;
                     responseArea.style.borderLeftColor = '#27ae60';
                     responseArea.style.backgroundColor = '#e8f5e9';
                     const detail = JSON.stringify(data, null, 2);
@@ -1559,6 +1612,151 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             }
 
             btn.disabled = false;
+            return isSuccess;
+        }
+
+        function buildSyntheticClickEvent(targetButton) {
+            return {
+                preventDefault: function() {},
+                stopPropagation: function() {},
+                target: targetButton
+            };
+        }
+
+        async function sendAllRequests(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const allButton = event.target;
+            const summaryArea = document.getElementById('response-step-all');
+            if (!summaryArea) {
+                return;
+            }
+
+            const step1Button = document.querySelector("button.btn-send[onclick*=\"'step1'\"]");
+            const step2Button = document.querySelector("button.btn-send[onclick*=\"'step2'\"]");
+            const step3Button = document.querySelector("button.btn-send[onclick*=\"'step3'\"]");
+            const step4Button = document.querySelector("button.btn-send[onclick*=\"insertCustomerInfo\"]");
+
+            allButton.disabled = true;
+            summaryArea.classList.add('show');
+            summaryArea.style.borderLeftColor = '#f39c12';
+            summaryArea.style.backgroundColor = '#fff3e0';
+            summaryArea.innerHTML = '<div class="response-header">⏳ Running all steps...</div><div>Flow: Step 1 → Step 2 → Step 3 → Step 4</div>';
+
+            const step1Ok = await sendRequest(
+                buildSyntheticClickEvent(step1Button || allButton),
+                'http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding',
+                'step1'
+            );
+            if (!step1Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 1</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            const step2Ok = await sendRequest(
+                buildSyntheticClickEvent(step2Button || allButton),
+                'http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfo',
+                'step2'
+            );
+            if (!step2Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 2</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            const step3Ok = await sendRequest(
+                buildSyntheticClickEvent(step3Button || allButton),
+                'http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN',
+                'step3'
+            );
+            if (!step3Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 3</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            const step4Ok = await insertCustomerInfo(buildSyntheticClickEvent(step4Button || allButton));
+            if (!step4Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 4</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            summaryArea.style.borderLeftColor = '#27ae60';
+            summaryArea.style.backgroundColor = '#e8f5e9';
+            summaryArea.innerHTML = '<div class="response-header">✅ All Send Success</div><div>Step 1, Step 2, Step 3 และ Step 4 สำเร็จครบตามลำดับ</div>';
+            allButton.disabled = false;
+        }
+
+        async function sendAllRequestsNoStep3(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const allButton = event.target;
+            const summaryArea = document.getElementById('response-step-all');
+            if (!summaryArea) {
+                return;
+            }
+
+            const step1Button = document.querySelector("button.btn-send[onclick*=\"'step1'\"]");
+            const step2Button = document.querySelector("button.btn-send[onclick*=\"'step2'\"]");
+            const step4Button = document.querySelector("button.btn-send[onclick*=\"insertCustomerInfo\"]");
+
+            allButton.disabled = true;
+            summaryArea.classList.add('show');
+            summaryArea.style.borderLeftColor = '#f39c12';
+            summaryArea.style.backgroundColor = '#fff3e0';
+            summaryArea.innerHTML = '<div class="response-header">⏳ Running all steps...</div><div>Flow: Step 1 → Step 2 → Step 4</div>';
+
+            const step1Ok = await sendRequest(
+                buildSyntheticClickEvent(step1Button || allButton),
+                'http://{{urlCDFCreateCustomer}}/CDF_NEW/api/IDPassOnboarding',
+                'step1'
+            );
+            if (!step1Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 1</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            const step2Ok = await sendRequest(
+                buildSyntheticClickEvent(step2Button || allButton),
+                'http://{{urlCDFGetCustomerInfo}}/CDF_NEW/api/getCustomerInfo',
+                'step2'
+            );
+            if (!step2Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 2</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            const step4Ok = await insertCustomerInfo(buildSyntheticClickEvent(step4Button || allButton));
+            if (!step4Ok) {
+                summaryArea.style.borderLeftColor = '#e74c3c';
+                summaryArea.style.backgroundColor = '#ffebee';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 4</div>';
+                allButton.disabled = false;
+                return;
+            }
+
+            summaryArea.style.borderLeftColor = '#27ae60';
+            summaryArea.style.backgroundColor = '#e8f5e9';
+            summaryArea.innerHTML = '<div class="response-header">✅ All Send Success</div><div>Step 1, Step 2 และ Step 4 สำเร็จครบตามลำดับ</div>';
+            allButton.disabled = false;
         }
 
         document.addEventListener('DOMContentLoaded', function() {

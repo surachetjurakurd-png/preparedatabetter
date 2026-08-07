@@ -2,6 +2,56 @@
 For prepare data test for better app.
 This link >> https://surachetjurakurd-png.github.io/preparedatabetter/Main_Menu.html
 
+## Update Summary (2026-08-07) : On version 0.7
+
+Summary of all updates completed today.
+
+### 1) Facial (base64) Input Sanitization
+- Prevented whitespace in `Facial (base64)` fields.
+- Sanitization now removes spaces, tabs, and line breaks while typing or pasting.
+- Added enforcement again before request payload generation to avoid invalid base64 being sent.
+
+Updated files:
+- Create_Customer_SIT_Thai_IAL23.html
+- Create_Customer_SIT_Foreigner.html
+- KKP_Channel_Verification.html
+
+### 2) Editable `myPin` in Customer Data
+- Added `MyPin (6 digits)` input to `Customer Data`.
+- Users can now define `myPin` manually instead of using a fixed value.
+- Input accepts numbers only and is limited to 6 digits.
+- Step 3 request preview and actual payload now use the entered `myPin`.
+- Added validation to block Step 3 if `myPin` is not exactly 6 digits.
+
+Updated files:
+- Create_Customer_SIT_Thai_IAL23.html
+- Create_Customer_SIT_Thai_IAL13.html
+- Create_Customer_SIT_Thai_IAL21.html
+
+### 3) Sequential `Send all requests` Buttons
+- Added automation buttons to run API steps in sequence and stop immediately on failure.
+- Added a summary response panel for the batch execution result.
+
+#### Create_Customer_SIT_Thai_IAL23.html
+- Added `Send all requests (customer with a PIN)` for Step `1 → 2 → 3 → 6`
+- Added `Send all requests (customer without a PIN)` / `All Send Request (Step 1→2→6)` for Step `1 → 2 → 6`
+- Moved the all-send controls to the top-right of `🔄 API Steps & Requests`
+- Styled the no-PIN button in yellow
+
+#### Create_Customer_SIT_Thai_IAL13.html
+- Added `Send all requests (Step 1→2→3→4)`
+- Added yellow `All Send Request (Step 1→2→4)`
+
+#### Create_Customer_SIT_Thai_IAL21.html
+- Added `Send all requests (Step 1→2→3→4)`
+- Added yellow `All Send Request (Step 1→2→4)`
+
+### 4) Version Alignment
+- Updated project pages to `Version 0.7`
+- Updated this README summary to reflect all changes delivered in version `0.7`
+
+-----------------------------------------------------------------------------------------------------------
+
 ## Update Summary (2026-07-24) 13:46 : On version 0.6
 
 Summary of all updates completed today.

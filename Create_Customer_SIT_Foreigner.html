@@ -540,7 +540,7 @@ node proxy-server.js
                     </div>
                     <div class="variable-item textarea">
                         <label class="variable-name">Facial (base64)</label>
-                        <textarea class="variable-textarea" id="image1" onchange="updateVariables()" onkeyup="updateVariables()" placeholder="Paste Base64 image data for Step 1..."></textarea>
+                        <textarea class="variable-textarea" id="image1" oninput="sanitizeImageBase64Input(event); updateVariables()" onchange="updateVariables()" onkeyup="updateVariables()" placeholder="Paste Base64 image data for Step 1..."></textarea>
                     </div>
                 </div>
             </div>
@@ -756,7 +756,7 @@ UAT:
         </div>
         
         <div class="footer">
-            <p>📄 Create Foreigner from API service | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.6</p>
+            <p>📄 Create Foreigner from API service | 🧒🏻 PO: Narisara Sangarun | 👨🏻‍💻 Dev: Surachet Jurakurd | 🤖 Jr. Dev: Github Co-pilot Credits 2K | Version 0.7</p>
         </div>
     </div>
     
@@ -1052,8 +1052,22 @@ UAT:
             const step = event.currentTarget;
             step.classList.toggle('expanded');
         }
+
+        function sanitizeImageBase64Input(event) {
+            const target = event && event.target ? event.target : document.getElementById('image1');
+            if (!target) {
+                return;
+            }
+
+            // Prevent spaces/newlines/tabs in base64 input.
+            const sanitized = target.value.replace(/[\s\u00A0]+/g, '');
+            if (sanitized !== target.value) {
+                target.value = sanitized;
+            }
+        }
         
         function updateVariables() {
+            const image1Element = document.getElementById('image1');
             const variables = {
                 identityID: document.getElementById('identityID').value,
                 identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
@@ -1064,11 +1078,15 @@ UAT:
                 dateOfIssue: document.getElementById('dateOfIssue').value,
                 dateOfExpiry: document.getElementById('dateOfExpiry').value,
                 issueCountry: document.getElementById('issueCountry').value,
-                image1: document.getElementById('image1').value,
+                image1: image1Element ? image1Element.value.replace(/[\s\u00A0]+/g, '') : '',
                 urlCDFCreateCustomer: document.getElementById('urlCDFCreateCustomer').value,
                 urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
                 referenceNo: document.getElementById('referenceNo').value
             };
+
+            if (image1Element && image1Element.value !== variables.image1) {
+                image1Element.value = variables.image1;
+            }
 
             updateEnvToggleUI(detectEnvFromEndpoints());
             
