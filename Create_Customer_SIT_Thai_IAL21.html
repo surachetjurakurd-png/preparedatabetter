@@ -1678,7 +1678,7 @@ POST http://{{urlCreateMyPin}}/caa-service/CREATE_MY_PIN
             if (!step3Ok) {
                 summaryArea.style.borderLeftColor = '#e74c3c';
                 summaryArea.style.backgroundColor = '#ffebee';
-                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 3</div>';
+                summaryArea.innerHTML = '<div class="response-header">❌ All Send Failed</div><div>หยุดที่ Step 3 เนื่องจาก API service timeout รบกวนกดปุ่ม 🚀 Send all requests (customer with a PIN) ซ้ำอีกครั้ง</div>';
                 allButton.disabled = false;
                 return;
             }
