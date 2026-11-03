@@ -508,6 +508,10 @@ node proxy-server.js
                         <input type="text" class="variable-input" id="identityFirstnameEn" value="BetterName" onchange="updateVariables()" onkeyup="updateVariables()">
                     </div>
                     <div class="variable-item">
+                        <label class="variable-name">ENG Midname</label>
+                        <input type="text" class="variable-input" id="identityMidnameEn" value="" onchange="updateVariables()" onkeyup="updateVariables()">
+                    </div>
+                    <div class="variable-item">
                         <label class="variable-name">ENG Lastname</label>
                         <input type="text" class="variable-input" id="identityLastnameEn" value="BetterLastname" onchange="updateVariables()" onkeyup="updateVariables()">
                     </div>
@@ -764,6 +768,7 @@ UAT:
         const defaultValues = {
             identityID: 'VV43647364',
             identityFirstnameEn: 'BetterName',
+            identityMidnameEn: '',
             identityLastnameEn: 'BetterLastname',
             mobileNo: '0877424559',
             email: 'kkmailuserQQ.0877424559@kkptest.onmicrosoft.com',
@@ -849,12 +854,12 @@ UAT:
                         "titleCodeTh": "00E002",
                         "titleDescTh": "MS.",
                         "firstNameTh": "{{identityFirstnameEn}}",
-                        "midNameTh": "",
+                        "midNameTh": "{{identityMidnameEn}}",
                         "lastNameTh": "{{identityLastnameEn}}",
                         "titleCodeEn": "00E002",
                         "titleDescEn": "MS.",
                         "firstNameEn": "{{identityFirstnameEn}}",
-                        "midNameEn": "",
+                        "midNameEn": "{{identityMidnameEn}}",
                         "lastNameEn": "{{identityLastnameEn}}",
                         "dateOfBirth": "{{dateOfBirth}}",
                         "dateOfIssue": "{{dateOfIssue}}",
@@ -1071,6 +1076,7 @@ UAT:
             const variables = {
                 identityID: document.getElementById('identityID').value,
                 identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
+                identityMidnameEn: document.getElementById('identityMidnameEn').value,
                 identityLastnameEn: document.getElementById('identityLastnameEn').value,
                 mobileNo: document.getElementById('mobileNo').value,
                 email: document.getElementById('email').value,
@@ -1102,6 +1108,7 @@ UAT:
                     let display = bodyStr
                         .replace(/{{identityID}}/g, variables.identityID)
                         .replace(/{{identityFirstnameEn}}/g, variables.identityFirstnameEn)
+                        .replace(/{{identityMidnameEn}}/g, variables.identityMidnameEn)
                         .replace(/{{identityLastnameEn}}/g, variables.identityLastnameEn)
                         .replace(/{{mobileNo}}/g, variables.mobileNo)
                         .replace(/{{email}}/g, variables.email)
@@ -1240,6 +1247,7 @@ UAT:
                 urlCDFGetCustomerInfo: document.getElementById('urlCDFGetCustomerInfo').value,
                 identityID: document.getElementById('identityID').value,
                 identityFirstnameEn: document.getElementById('identityFirstnameEn').value,
+                identityMidnameEn: document.getElementById('identityMidnameEn').value,
                 identityLastnameEn: document.getElementById('identityLastnameEn').value,
                 mobileNo: document.getElementById('mobileNo').value,
                 email: document.getElementById('email').value,
@@ -1262,6 +1270,7 @@ UAT:
             const replacedStr = payloadStr
                 .replace(/{{identityID}}/g, variables.identityID)
                 .replace(/{{identityFirstnameEn}}/g, variables.identityFirstnameEn)
+                .replace(/{{identityMidnameEn}}/g, variables.identityMidnameEn)
                 .replace(/{{identityLastnameEn}}/g, variables.identityLastnameEn)
                 .replace(/{{mobileNo}}/g, variables.mobileNo)
                 .replace(/{{email}}/g, variables.email)
